@@ -1,6 +1,6 @@
 from click.testing import CliRunner
 
-from main import main
+from bamp.main import main
 
 
 def test_arg_part_missing():
