@@ -8,5 +8,6 @@ import click
 def main(current_version, part, file_):
     pass
 
+
 if __name__ == '__main__':
     main()

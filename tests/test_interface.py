@@ -36,4 +36,3 @@ def test_arg_part_with_two_files():
     assert result.exit_code == 0
     assert 'setup.py' in result.output
     assert 'tox.ini' in result.output
-
