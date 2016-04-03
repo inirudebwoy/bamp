@@ -25,10 +25,22 @@ def join_version(version_list):
 
 
 def bamp_version(version, part):
+
+    # TODO: will this be called from other places than UI?
+    #       this validation could be moved outside
     try:
-        current_value = getattr(version, part)
+        getattr(version, part)
     except AttributeError:
         # TODO: raise own exception?
         return None
 
-    return version._replace(**{part: current_value + 1})
+    new_values = []
+    for i, v in version._asdict().items():
+        if version._fields.index(i) > version._fields.index(part):
+            new_values.append(0)
+        elif version._fields.index(i) == version._fields.index(part):
+            new_values.append(v + 1)
+        else:
+            new_values.append(v)
+
+    return SplitVersion(*new_values)

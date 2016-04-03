@@ -23,8 +23,16 @@ def test_bamp_patch():
     assert bamp_version(SplitVersion(0, 0, 1), 'patch') == SplitVersion(0, 0, 2)
 
 
+def test_bamp_patch_with_major_minor():
+    assert bamp_version(SplitVersion(2, 3, 4), 'patch') == SplitVersion(2, 3, 5)
+
+
 def test_bamp_minor():
     assert bamp_version(SplitVersion(0, 0, 9), 'minor') == SplitVersion(0, 1, 0)
+
+
+def test_bamp_minor_with_patch_major():
+    assert bamp_version(SplitVersion(2, 8, 10), 'minor') == SplitVersion(2, 9, 0)
 
 
 def test_bamp_major_with_minor():
