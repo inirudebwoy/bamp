@@ -8,6 +8,8 @@ TODO: meta and pre-releases
 """
 from collections import namedtuple
 
+from .exc import IncorrectPart
+
 VERSION_PARTS = ('major', 'minor', 'patch')
 SplitVersion = namedtuple('SplitVersion', VERSION_PARTS)
 
@@ -40,8 +42,7 @@ def join_version(version_list):
     return VERSION_SEPARATOR.join(str_list)
 
 
-# TODO: this should be a private function
-def bamp_version(version, part):
+def _bamp(version, part):
     """Bump version according to semantic versioning
 
     :param version: version to bump
@@ -52,14 +53,6 @@ def bamp_version(version, part):
     :rtype: namedtuple SplitVersion
 
     """
-    # TODO: will this be called from other places than UI?
-    #       this validation could be moved outside
-    try:
-        getattr(version, part)
-    except AttributeError:
-        # TODO: raise own exception?
-        return None
-
     new_values = []
     for i, v in version._asdict().items():
         if version._fields.index(i) > version._fields.index(part):
@@ -70,3 +63,11 @@ def bamp_version(version, part):
             new_values.append(v)
 
     return SplitVersion(*new_values)
+
+
+def bamp_version(version, part):
+    try:
+        getattr(version, part)
+    except AttributeError:
+        raise IncorrectPart
+    return _bamp(version, part)

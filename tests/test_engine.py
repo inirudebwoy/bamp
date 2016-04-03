@@ -1,4 +1,8 @@
-from bamp.engine import split_version, join_version, bamp_version, SplitVersion
+import pytest
+
+from bamp.engine import split_version, join_version, _bamp, SplitVersion, \
+    bamp_version
+from bamp.exc import IncorrectPart
 
 
 def test_split_simple():
@@ -20,24 +24,33 @@ def test_join():
 
 
 def test_bamp_patch():
-    assert bamp_version(SplitVersion(0, 0, 1), 'patch') == SplitVersion(0, 0, 2)
+    assert _bamp(SplitVersion(0, 0, 1), 'patch') == SplitVersion(0, 0, 2)
 
 
 def test_bamp_patch_with_major_minor():
-    assert bamp_version(SplitVersion(2, 3, 4), 'patch') == SplitVersion(2, 3, 5)
+    assert _bamp(SplitVersion(2, 3, 4), 'patch') == SplitVersion(2, 3, 5)
 
 
 def test_bamp_minor():
-    assert bamp_version(SplitVersion(0, 0, 9), 'minor') == SplitVersion(0, 1, 0)
+    assert _bamp(SplitVersion(0, 0, 9), 'minor') == SplitVersion(0, 1, 0)
 
 
 def test_bamp_minor_with_patch_major():
-    assert bamp_version(SplitVersion(2, 8, 10), 'minor') == SplitVersion(2, 9, 0)
+    assert _bamp(SplitVersion(2, 8, 10), 'minor') == SplitVersion(2, 9, 0)
 
 
 def test_bamp_major_with_minor():
-    assert bamp_version(SplitVersion(0, 1, 1), 'major') == SplitVersion(1, 0, 0)
+    assert _bamp(SplitVersion(0, 1, 1), 'major') == SplitVersion(1, 0, 0)
 
 
 def test_bamp_major():
-    assert bamp_version(SplitVersion(2, 0, 1), 'major') == SplitVersion(3, 0, 0)
+    assert _bamp(SplitVersion(2, 0, 1), 'major') == SplitVersion(3, 0, 0)
+
+
+def test_bamp_version():
+    assert bamp_version(SplitVersion(0, 0, 1), 'patch') == SplitVersion(0, 0, 2)
+
+
+def test_bamp_version_bad_part():
+    with pytest.raises(IncorrectPart):
+        bamp_version(SplitVersion(0, 0, 1), 'foobar')
