@@ -1,6 +1,8 @@
 import os.path
 import importlib
 
+from bamp.exc import MissingConfigParser
+
 
 def get_config(filename):
     """Load config module base on the config file format
@@ -10,11 +12,15 @@ def get_config(filename):
 
     :param filename: name of the config file
     :type filename: str
+    :raises: MissingConfigParser
     :returns: configuration loaded from file
 
     """
     root, ext = os.path.splitext(filename)
     if ext == '.cfg':  # this really is INI
         ext = '.ini'  # would some mapping be better?
-    conf_module = importlib.import_module(__name__ + ext)
+    try:
+        conf_module = importlib.import_module(__name__ + ext)
+    except ImportError:
+        raise MissingConfigParser
     return conf_module.load_config()

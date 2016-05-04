@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(name='bamp',
       version='0.0.1',
-      packages=find_packages('bamp'),
+      packages=find_packages(),
       description='Bump version according to semantic versioning',
       author='Michał Klich',
       author_email='michal@michalklich.com',
