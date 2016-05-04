@@ -48,9 +48,9 @@ def test_bamp_major():
 
 
 def test_bamp_version():
-    assert bamp_version(SplitVersion(0, 0, 1), 'patch') == SplitVersion(0, 0, 2)
+    assert bamp_version('0.0.1', 'patch') == '0.0.2'
 
 
 def test_bamp_version_bad_part():
     with pytest.raises(IncorrectPart):
-        bamp_version(SplitVersion(0, 0, 1), 'foobar')
+        bamp_version('0.0.1', 'foobar')
