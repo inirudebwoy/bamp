@@ -1,3 +1,5 @@
+from bamp.engine import bamp_version
+
 import click
 
 
@@ -6,7 +8,7 @@ import click
 @click.argument('part', type=click.Choice(['patch', 'minor', 'major']))
 @click.argument('file_', nargs=-1, type=click.Path(exists=True))
 def main(current_version, part, file_):
-    pass
+    print(bamp_version(current_version, part))
 
 
 if __name__ == '__main__':

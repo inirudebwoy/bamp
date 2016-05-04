@@ -66,8 +66,9 @@ def _bamp(version, part):
 
 
 def bamp_version(version, part):
+    version = split_version(version)
     try:
         getattr(version, part)
     except AttributeError:
         raise IncorrectPart
-    return _bamp(version, part)
+    return join_version(_bamp(version, part))
