@@ -4,6 +4,20 @@ import importlib
 from bamp.exc import MissingConfigParser
 
 
+def get_config_path():
+    """ Find config file path
+
+    Function searches for "bamp.cfg" file within project directory or "setup.cfg"
+
+    """
+
+    return '.setup.cfg'
+
+
+def parse_config(config_path):
+    pass
+
+
 def get_config(filename):
     """Load config module base on the config file format
 
@@ -22,5 +36,5 @@ def get_config(filename):
     try:
         conf_module = importlib.import_module(__name__ + ext)
     except ImportError:
-        raise MissingConfigParser
+        raise MissingConfigParser()
     return conf_module.load_config()

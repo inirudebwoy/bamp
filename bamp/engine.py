@@ -67,7 +67,7 @@ def part_in_version(version, part):
     return part in version
 
 
-def bamp_version(version, part):
+def bamp_version(version, part, config):
     version = split_version(version)
     if part_in_version(version, part):
         bamped = _bamp(version, part)
