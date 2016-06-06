@@ -64,12 +64,27 @@ def _bamp(version, part):
 
 
 def part_in_version(version, part):
+    """Helper checking if part (i.e. minor) is part of parsed version
+
+    :param version: parsed version with values and part names
+    :type version: dict, sequence or object supporting __contains__
+    :param part: name of part
+    :type part: str
+    :returns: True if part is in version, False if not
+    :rtype: bool
+
+    """
     return part in version
 
 
 def bamp_version(version, part, config):
+    """TODO"""
     version = split_version(version)
     if part_in_version(version, part):
         bamped = _bamp(version, part)
         return join_version(bamped.values())
     raise IncorrectPart('{0} could not be found in {1}'.format(part, version))
+
+
+def replace(files, current, new):
+    pass
