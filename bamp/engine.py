@@ -6,13 +6,12 @@ TODO: create new option type to make sure that it is in correct format?
 TODO: meta and pre-releases
 
 """
-from collections import namedtuple
+from collections import OrderedDict
 
 from .exc import IncorrectPart
 
+# TODO: taken from config
 VERSION_PARTS = ('major', 'minor', 'patch')
-SplitVersion = namedtuple('SplitVersion', VERSION_PARTS)
-
 VERSION_SEPARATOR = '.'
 
 
@@ -26,7 +25,7 @@ def split_version(version):
 
     """
     int_list = map(int, version.split(VERSION_SEPARATOR))
-    return SplitVersion(*int_list)
+    return OrderedDict(zip(VERSION_PARTS, int_list))
 
 
 def join_version(version_list):
@@ -54,21 +53,23 @@ def _bamp(version, part):
 
     """
     new_values = []
-    for i, v in version._asdict().items():
-        if version._fields.index(i) > version._fields.index(part):
+    for i, v in version.items():
+        if version.keys().index(i) > version.keys().index(part):
             new_values.append(0)
-        elif version._fields.index(i) == version._fields.index(part):
+        elif version.keys().index(i) == version.keys().index(part):
             new_values.append(v + 1)
         else:
             new_values.append(v)
+    return OrderedDict(zip(VERSION_PARTS, new_values))
 
-    return SplitVersion(*new_values)
+
+def part_in_version(version, part):
+    return part in version
 
 
 def bamp_version(version, part):
     version = split_version(version)
-    try:
-        getattr(version, part)
-    except AttributeError:
-        raise IncorrectPart
-    return join_version(_bamp(version, part))
+    if part_in_version(version, part):
+        bamped = _bamp(version, part)
+        return join_version(bamped.values())
+    raise IncorrectPart('{0} could not be found in {1}'.format(part, version))
