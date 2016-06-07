@@ -53,11 +53,15 @@ def _bamp(version, part):
 
     """
     new_values = []
+    zero_rest = False
     for i, v in version.items():
-        if version.keys().index(i) > version.keys().index(part):
+        if zero_rest:
             new_values.append(0)
-        elif version.keys().index(i) == version.keys().index(part):
+            continue
+
+        if i == part:
             new_values.append(v + 1)
+            zero_rest = True
         else:
             new_values.append(v)
     return OrderedDict(zip(VERSION_PARTS, new_values))
