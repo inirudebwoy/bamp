@@ -4,18 +4,26 @@ import importlib
 from bamp.exc import MissingConfigParser
 
 
-def get_config_path():
-    """ Find config file path
+def find_config():
+    """TODO
 
-    Function searches for "bamp.cfg" file within project directory or "setup.cfg"
+    config lookup"""
+    if os.path.exists('bamp.cfg'):
+        return 'bamp.cfg'
+    elif os.path.exists('setup.cfg'):
+        return 'setup.cfg'
+    else:
+        return None
 
+
+def parse_config(filename, input_args):
+    """TODO
+
+    merging config with input_params
     """
-
-    return '.setup.cfg'
-
-
-def parse_config(config_path):
-    pass
+    # TODO: this should throw exception when config is malformed
+    config = get_config(filename)
+    return config
 
 
 def get_config(filename):
@@ -36,5 +44,5 @@ def get_config(filename):
     try:
         conf_module = importlib.import_module(__name__ + ext)
     except ImportError:
-        raise MissingConfigParser()
-    return conf_module.load_config()
+        raise MissingConfigParser
+    return conf_module.load_config(filename)
