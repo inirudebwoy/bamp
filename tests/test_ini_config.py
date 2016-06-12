@@ -1,14 +1,14 @@
 from StringIO import StringIO
 try:
-    from ConfigParser import ConfigParser
+    import ConfigParser as configparser
 except ImportError:
-    from configparser import ConfigParser
+    import configparser
 
 from bamp.config.ini import config_dump
 
 
 def make_config(content):
-    config = ConfigParser()
+    config = configparser.ConfigParser()
     input_file = StringIO(content)
     config.readfp(input_file)
     return config

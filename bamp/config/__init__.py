@@ -1,6 +1,10 @@
 import logging
 import os.path
 import importlib
+try:
+    import ConfigParser as configparser
+except ImportError:
+    import configparser
 
 from bamp.exc import MissingConfigParser
 
@@ -10,7 +14,7 @@ logging.basicConfig()
 
 def find_config():
     """TODO
-
+    TODO: should this accept a parameter for root path?
     config lookup"""
     if os.path.exists('bamp.cfg'):
         return 'bamp.cfg'
@@ -25,8 +29,12 @@ def parse_config(filename, input_args):
 
     merging config with input_params
     """
-    # TODO: this should throw exception when config is malformed
-    config = get_config(filename)
+    try:
+        config = get_config(filename)
+    except configparser.Error:
+        logger.exception('Config could not be parsed due to an error.')
+
+    # TODO: merging
     return config
 
 
