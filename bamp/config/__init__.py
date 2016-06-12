@@ -24,7 +24,7 @@ def find_config():
         return None
 
 
-def parse_config(filename, input_args):
+def parse_config(filename):
     """TODO
 
     merging config with input_params
@@ -33,9 +33,11 @@ def parse_config(filename, input_args):
         config = get_config(filename)
     except configparser.Error:
         logger.exception('Config could not be parsed due to an error.')
-
-    # TODO: merging
     return config
+
+
+def make_default_map(config):
+    return config.get('bamp', {})
 
 
 def get_config(filename):
