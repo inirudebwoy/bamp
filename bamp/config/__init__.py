@@ -1,7 +1,11 @@
+import logging
 import os.path
 import importlib
 
 from bamp.exc import MissingConfigParser
+
+logger = logging.getLogger(__name__)
+logging.basicConfig()
 
 
 def find_config():

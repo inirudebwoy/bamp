@@ -1,10 +1,15 @@
+import logging
 try:
     from ConfigParser import ConfigParser
 except ImportError:
     from configparser import ConfigParser
 
+logger = logging.getLogger(__name__)
+logging.basicConfig()
+
 
 def load_config(filename):
+    """ TODO """
     parser = ConfigParser()
     parser.read(filename)
     return config_dump(parser)

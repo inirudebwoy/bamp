@@ -6,6 +6,7 @@ TODO: create new option type to make sure that it is in correct format?
 TODO: meta and pre-releases
 
 """
+import logging
 from collections import OrderedDict
 
 from .exc import IncorrectPart
@@ -13,6 +14,9 @@ from .exc import IncorrectPart
 # TODO: taken from config
 VERSION_PARTS = ('major', 'minor', 'patch')
 VERSION_SEPARATOR = '.'
+
+logger = logging.getLogger(__name__)
+logging.basicConfig()
 
 
 def split_version(version):
@@ -67,13 +71,20 @@ def _bamp(version, part):
     return OrderedDict(zip(VERSION_PARTS, new_values))
 
 
-def part_in_version(version, part):
-    return part in version
-
-
-def bamp_version(version, part, config):
+def bamp_version(version, part, files):
+    # TODO: checkes done here
     version = split_version(version)
-    if part_in_version(version, part):
-        bamped = _bamp(version, part)
-        return join_version(bamped.values())
-    raise IncorrectPart('{0} could not be found in {1}'.format(part, version))
+    if part not in version:
+        raise IncorrectPart(
+            '{0} could not be found in {1}'.format(part, version))
+
+    bamped = _bamp(version, part)
+    return join_version(bamped.values())
+
+
+def _files_bamper(version, part, files):
+    # bamp files
+    # make temp files for files
+    # bamp all files + config
+    # if everything ok replace files
+    pass
