@@ -1,5 +1,6 @@
 '''
 TODO: is newline on windows different for python?
+TODO: pass config as an option, see aliases.py from click examples
 
 '''
 import logging
@@ -15,18 +16,14 @@ logging.basicConfig()
 
 @click.command()
 @click.option('version', '--version')
-@click.argument('part', type=click.Choice(['patch', 'minor', 'major']))
-@click.argument('files', nargs=-1, type=click.Path(exists=True))
+@click.option('files', '-f', type=click.Path(exists=True), multiple=True)
+@click.argument('part', nargs=1, type=click.Choice(['patch', 'minor', 'major']))
 def bamp(version, part, files):
-    input_args = locals()  # TODO: other way to grab args?
     # TODO: any argument that is required but can be configured
     # can't be marked required. Thus merge function should validate
     # if we have all needed args.
-    logger.debug(input_args)
     print(bamp_version(version, part, files))
 
 if __name__ == '__main__':
-    # make deault_map out of config
     config = parse_config(find_config())
-    print(make_default_map(config))
     bamp(default_map=make_default_map(config))
