@@ -13,9 +13,11 @@ logging.basicConfig()
 
 
 def find_config():
-    """TODO
-    TODO: should this accept a parameter for root path?
-    config lookup"""
+    """Locate config file
+
+    :returns: config filename or None
+
+    """
     if os.path.exists('bamp.cfg'):
         return 'bamp.cfg'
     elif os.path.exists('setup.cfg'):
@@ -25,9 +27,13 @@ def find_config():
 
 
 def parse_config(filename):
-    """TODO
+    """Parse config and create ConfigParser object.
 
-    merging config with input_params
+    :param filename: Name of the config file
+    :type filename: str
+    :returns: Parsed config
+    :rtype: ConfigParser
+
     """
     try:
         config = get_config(filename)
@@ -37,6 +43,14 @@ def parse_config(filename):
 
 
 def make_default_map(config):
+    """Create a dictionary for default_map argument of click Command
+
+    :param config: config object as dictionary
+    :type config: dict
+    :returns: dictionary with values accepted as default_map
+    :rtype: dict
+
+    """
     return config.get('bamp', {})
 
 
