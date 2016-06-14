@@ -4,7 +4,13 @@ from setuptools import setup, find_packages
 
 setup(name='bamp',
       version='0.0.1',
+      install_requires=['Click'],
+      entry_points='''
+      [console_scripts]
+      bamp=bamp.main:cli
+      ''',
       packages=find_packages(),
+      include_package_data=True,
       description='Bump version according to semantic versioning',
       author='Michał Klich',
       author_email='michal@michalklich.com',
