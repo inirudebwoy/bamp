@@ -6,6 +6,7 @@ TODO: create new option type to make sure that it is in correct format?
 TODO: meta and pre-releases
 
 """
+import os
 from shutil import copy2
 from io import open
 from tempfile import mkstemp
@@ -96,11 +97,13 @@ def bamp_files(cur_version, new_version, files):
     for orig, bamped in bamped_files:
         copy2(bamped, orig)
 
+    # clear temps
+    for _, copy_ in bamped_files:
+        os.remove(copy_)
+
 
 def _file_bamper(cur_version, new_version, file_path):
-    # make a copy
     _, copy_path = mkstemp()
-    # bamp copy
     with open(copy_path, mode='w', encoding='utf-8') as cf:
         with open(file_path, encoding='utf-8') as of:
             for line in of.readlines():
