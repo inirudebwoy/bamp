@@ -1,6 +1,7 @@
 '''
 TODO: is newline on windows different for python?
 TODO: pass config as an option, see aliases.py from click examples
+TODO: dry-run? use logging for printing
 
 '''
 import logging
@@ -8,7 +9,7 @@ import logging
 import click
 
 from bamp.config import find_config, parse_config, make_default_map
-from bamp.engine import bamp_version
+from bamp.engine import bamp_version, bamp_files
 
 logger = logging.getLogger(__name__)
 logging.basicConfig()
@@ -43,7 +44,10 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.argument('part', nargs=1,
                 type=click.Choice(['patch', 'minor', 'major']))
 def bamp(version, part, files):
-    click.echo(bamp_version(version, part, files))
+    new_version = bamp_version(version, part, files)
+    bamp_files(version, new_version, files)
+    # TODO: VC goes here, if config is set
+    click.echo(new_version)
 
 if __name__ == '__main__':
     config = parse_config(find_config())

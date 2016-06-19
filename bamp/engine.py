@@ -6,10 +6,14 @@ TODO: create new option type to make sure that it is in correct format?
 TODO: meta and pre-releases
 
 """
+from shutil import copy2
+from io import open
+from tempfile import mkstemp
 import logging
 from collections import OrderedDict
 
 from .exc import IncorrectPart
+from .config import find_config
 
 # TODO: taken from config
 VERSION_PARTS = ('major', 'minor', 'patch')
@@ -82,9 +86,26 @@ def bamp_version(version, part, files):
     return join_version(bamped.values())
 
 
-def _files_bamper(version, part, files):
-    # bamp files
-    # make temp files for files
-    # bamp all files + config
-    # if everything ok replace files
-    pass
+def bamp_files(cur_version, new_version, files):
+    # bamp the config if present
+    config = find_config()
+    if config:
+        files += (config, )
+
+    bamped_files = [_file_bamper(cur_version, new_version, f) for f in files]
+    for orig, bamped in bamped_files:
+        copy2(bamped, orig)
+
+
+def _file_bamper(cur_version, new_version, file_path):
+    # make a copy
+    _, copy_path = mkstemp()
+    # bamp copy
+    with open(copy_path, mode='w', encoding='utf-8') as cf:
+        with open(file_path, encoding='utf-8') as of:
+            for line in of.readlines():
+                if cur_version in line:
+                    line = line.replace(cur_version, new_version)
+                cf.write(line)
+
+    return (file_path, copy_path)
