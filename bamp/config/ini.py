@@ -29,3 +29,22 @@ def config_dump(config):
             dict_item[key_item] = value_item
         dict_config[section] = dict_item
     return dict_config
+
+
+def prepare_config(filename):
+    """Parse config and create ConfigParser object.
+
+    :param filename: Name of the config file
+    :type filename: str
+    :returns: Parsed config
+    :rtype: ConfigParser
+
+    """
+    if not filename:
+        return {}
+
+    try:
+        config = load_config(filename)
+    except configparser.Error:
+        logger.exception('Config could not be parsed due to an error.')
+    return config

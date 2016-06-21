@@ -1,10 +1,6 @@
 import logging
 import os.path
 import importlib
-try:
-    import ConfigParser as configparser
-except ImportError:
-    import configparser
 
 from bamp.exc import MissingConfigParser
 
@@ -24,22 +20,6 @@ def find_config():
         return 'setup.cfg'
     else:
         return None
-
-
-def parse_config(filename):
-    """Parse config and create ConfigParser object.
-
-    :param filename: Name of the config file
-    :type filename: str
-    :returns: Parsed config
-    :rtype: ConfigParser
-
-    """
-    try:
-        config = get_config(filename)
-    except configparser.Error:
-        logger.exception('Config could not be parsed due to an error.')
-    return config
 
 
 def make_default_map(config):
@@ -66,6 +46,11 @@ def get_config(filename):
     :returns: configuration loaded from file
 
     """
+    conf_module = get_config_module(filename)
+    return conf_module.load_config(filename)
+
+
+def get_config_module(filename):
     root, ext = os.path.splitext(filename)
     if ext == '.cfg':  # this really is INI
         ext = '.ini'  # would some mapping be better?
@@ -73,4 +58,14 @@ def get_config(filename):
         conf_module = importlib.import_module(__name__ + ext)
     except ImportError:
         raise MissingConfigParser
-    return conf_module.load_config(filename)
+    return conf_module
+
+
+def prepare_config(filename):
+    config = get_config_module(filename)
+    conf_dict = config.prepare_config(filename)
+    main_section = conf_dict.get('bamp', {})
+    if main_section:
+        files = main_section.get('files', [])
+        files.append(filename)
+    return conf_dict

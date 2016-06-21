@@ -8,8 +8,9 @@ import logging
 
 import click
 
-from bamp.config import find_config, parse_config, make_default_map
-from bamp.engine import bamp_version, bamp_files
+from bamp.config import find_config, prepare_config, make_default_map
+from bamp.engine import bamp_version
+from bamp.persistence import bamp_files
 
 logger = logging.getLogger(__name__)
 logging.basicConfig()
@@ -44,11 +45,11 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.argument('part', nargs=1,
                 type=click.Choice(['patch', 'minor', 'major']))
 def bamp(version, part, files):
-    new_version = bamp_version(version, part, files)
+    new_version = bamp_version(version, part)
     bamp_files(version, new_version, files)
     # TODO: VC goes here, if config is set
     click.echo(new_version)
 
 if __name__ == '__main__':
-    config = parse_config(find_config())
+    config = prepare_config(find_config())
     bamp(default_map=make_default_map(config))
