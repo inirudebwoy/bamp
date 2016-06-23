@@ -4,6 +4,8 @@ try:
 except ImportError:
     import configparser
 
+from bamp.exc import ErrorParsingConfig
+
 logger = logging.getLogger(__name__)
 logging.basicConfig()
 
@@ -38,6 +40,7 @@ def prepare_config(filename):
     :type filename: str
     :returns: Parsed config
     :rtype: ConfigParser
+    :raises: ErrorParsingConfig
 
     """
     if not filename:
@@ -47,4 +50,5 @@ def prepare_config(filename):
         config = load_config(filename)
     except configparser.Error:
         logger.exception('Config could not be parsed due to an error.')
+        raise ErrorParsingConfig()
     return config

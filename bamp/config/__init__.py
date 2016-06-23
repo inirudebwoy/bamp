@@ -2,7 +2,7 @@ import logging
 import os.path
 import importlib
 
-from bamp.exc import MissingConfigParser
+from bamp.exc import MissingConfigParser, ErrorParsingConfig
 
 logger = logging.getLogger(__name__)
 logging.basicConfig()
@@ -10,6 +10,12 @@ logging.basicConfig()
 
 def find_config():
     """Locate config file
+
+    TODO: this function should run only if config has not been passed from
+    command line.
+    Should this function be defined in config plugin file?
+    Would it be better to have an object of config, it would mean the state could be
+    kept during whole execution. Is it really needed?
 
     :returns: config filename or None
 
@@ -57,13 +63,19 @@ def get_config_module(filename):
     try:
         conf_module = importlib.import_module(__name__ + ext)
     except ImportError:
-        raise MissingConfigParser
+        raise MissingConfigParser()
     return conf_module
 
 
 def prepare_config(filename):
     config = get_config_module(filename)
-    conf_dict = config.prepare_config(filename)
+    try:
+        conf_dict = config.prepare_config(filename)
+    except ErrorParsingConfig:
+        # TODO: log meaningful info like plugin type
+        # TODO: explain what could have gone wrong in log message
+        logger.exception('Error pasing log')
+
     main_section = conf_dict.get('bamp', {})
     if main_section:
         files = main_section.get('files', [])
