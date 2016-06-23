@@ -5,12 +5,14 @@ TODO: dry-run? use logging for printing
 
 '''
 import logging
+import sys
 
 import click
 
 from bamp.config import find_config, prepare_config, make_default_map
 from bamp.engine import bamp_version
 from bamp.persistence import bamp_files
+from bamp.exc import ErrorConfigParsing
 
 logger = logging.getLogger(__name__)
 logging.basicConfig()
@@ -51,5 +53,10 @@ def bamp(version, part, files):
     click.echo(new_version)
 
 if __name__ == '__main__':
-    config = prepare_config(find_config())
+    try:
+        config = prepare_config(find_config())
+    except KeyboardInterrupt:
+        click.echo('User cancelled.')
+    except ErrorConfigParsing:
+        sys.exit(1)
     bamp(default_map=make_default_map(config))

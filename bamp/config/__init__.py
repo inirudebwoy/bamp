@@ -2,7 +2,7 @@ import logging
 import os.path
 import importlib
 
-from bamp.exc import MissingConfigParser, ErrorParsingConfig
+from bamp.exc import MissingConfigParser, ErrorConfigParsing
 
 logger = logging.getLogger(__name__)
 logging.basicConfig()
@@ -57,6 +57,15 @@ def get_config(filename):
 
 
 def get_config_module(filename):
+    """Retrieve module responsible for parsing specific config file format.
+
+    :param filename: name of file with configuration
+    :type filename: str
+    :returns: module loaded based on config file format
+    :rtype: module
+    :raises: MissingConfigParser
+
+    """
     root, ext = os.path.splitext(filename)
     if ext == '.cfg':  # this really is INI
         ext = '.ini'  # would some mapping be better?
@@ -68,13 +77,25 @@ def get_config_module(filename):
 
 
 def prepare_config(filename):
+    """Translate config file into config dictionary.
+
+    Add configuration file so the version stored in it can be bamped.
+    Function calls specific config parsing function based on config file
+    format.
+
+    :param filename: name of file with configuration
+    :type filename: str
+    :returns: modified config dictionary
+    :rtype: dict
+    :raises: ErrorConfigParsing
+
+    """
     config = get_config_module(filename)
     try:
         conf_dict = config.prepare_config(filename)
-    except ErrorParsingConfig:
-        # TODO: log meaningful info like plugin type
-        # TODO: explain what could have gone wrong in log message
-        logger.exception('Error pasing log')
+    except ErrorConfigParsing:
+        logger.exception('Error parsing log.')
+        raise
 
     main_section = conf_dict.get('bamp', {})
     if main_section:
