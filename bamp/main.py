@@ -5,6 +5,7 @@ TODO: dry-run? use logging for printing
 
 '''
 import logging
+import logging.config
 import sys
 
 import click
@@ -14,8 +15,46 @@ from bamp.engine import bamp_version
 from bamp.persistence import bamp_files
 from bamp.exc import ErrorConfigParsing
 
-logger = logging.getLogger(__name__)
-logging.basicConfig()
+
+DEBUG = False
+
+
+class MyFilter(logging.Filter):
+    def __init__(self, debug=None):
+        self.debug = debug
+
+    def filter(self, record):
+        # TODO: Debug mode here should print everything
+        # I want to display exception messages to a user but with no traceback
+        # with filter on a handler I should be able to do it.
+        # pass errors and info(?) to StreamHandler, rest to null unless in Debug mode.
+        # than everything is getting printed out.
+        if self.debug:
+            return True
+
+        if record.levelname == 'ERROR' and record.exc_info:
+            record.exc_info = None
+        return True
+
+LOGGING = {
+    'version': 1,
+    'filters': {
+        'myfilter': {
+            '()': MyFilter,
+            'debug': DEBUG
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'filters': ['myfilter']
+        }
+    },
+    'root': {
+        'level': 'DEBUG',
+        'handlers': ['console']
+    },
+}
 
 
 def required(ctx, param, value):
@@ -37,6 +76,7 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
+@click.option('--debug', is_flag=True)
 @click.option('-v', '--version', help='Current version of the program.',
               callback=required)
 @click.option('files', '-f', '--file',
@@ -46,13 +86,19 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
               callback=required)
 @click.argument('part', nargs=1,
                 type=click.Choice(['patch', 'minor', 'major']))
-def bamp(version, part, files):
+def bamp(version, part, files, debug):
     new_version = bamp_version(version, part)
     bamp_files(version, new_version, files)
     # TODO: VC goes here, if config is set
     click.echo(new_version)
 
 if __name__ == '__main__':
+    if '--debug' in sys.argv:
+        DEBUG = True
+        LOGGING['filters']['myfilter']['debug'] = DEBUG
+
+    logging.config.dictConfig(LOGGING)
+
     try:
         config = prepare_config(find_config())
     except KeyboardInterrupt:

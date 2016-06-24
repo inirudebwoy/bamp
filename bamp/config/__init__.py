@@ -5,7 +5,6 @@ import importlib
 from bamp.exc import MissingConfigParser, ErrorConfigParsing
 
 logger = logging.getLogger(__name__)
-logging.basicConfig()
 
 
 def find_config():

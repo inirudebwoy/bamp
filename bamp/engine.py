@@ -16,7 +16,6 @@ VERSION_PARTS = ('major', 'minor', 'patch')
 VERSION_SEPARATOR = '.'
 
 logger = logging.getLogger(__name__)
-logging.basicConfig()
 
 
 def split_version(version):

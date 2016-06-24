@@ -11,7 +11,6 @@ except ImportError:
 from bamp.exc import ErrorConfigParsing
 
 logger = logging.getLogger(__name__)
-logging.basicConfig()
 
 
 def load_config(filepath):
