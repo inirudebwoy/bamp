@@ -1,9 +1,6 @@
 import logging
 
 
-logger = logging.getLogger(__name__)
-
-
 class ExceptionFilter(logging.Filter):
     def __init__(self, debug=None):
         self.debug = debug
@@ -31,8 +28,10 @@ LOGGING = {
             'filters': ['exc_filter']
         }
     },
-    'root': {
-        'level': 'DEBUG',
-        'handlers': ['console']
-    },
+    'loggers': {
+        'bamp': {
+            'level': 'DEBUG',
+            'handlers': ['console']
+        },
+    }
 }

@@ -45,8 +45,10 @@ def read_config(ctx, param, value):
 
 def enable_debug(ctx, param, value):
     """Enable debugging"""
+    logging.config.dictConfig(LOGGING)
     if value:
         LOGGING['filters']['exc_filter']['debug'] = True
         logger.debug('Debug is on.')
-    logging.config.dictConfig(LOGGING)
+        logging.config.dictConfig(LOGGING)
+
     return value

@@ -12,9 +12,7 @@ from bamp.engine import bamp_version
 from bamp.persistence import bamp_files
 from bamp.callbacks import enable_debug, read_config, required
 
-
-logger = logging.getLogger(__name__)
-
+logger = logging.getLogger('bamp')
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
