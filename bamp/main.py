@@ -1,38 +1,28 @@
 '''
 TODO: is newline on windows different for python?
-TODO: pass config as an option, see aliases.py from click examples
+TODO: dry-run? use logging for printing
 
 '''
 import logging
+import logging.config
 
 import click
 
-from bamp.config import find_config, parse_config, make_default_map
 from bamp.engine import bamp_version
+from bamp.persistence import bamp_files
+from bamp.callbacks import enable_debug, read_config, required
 
-logger = logging.getLogger(__name__)
-logging.basicConfig()
-
-
-def required(ctx, param, value):
-    """Make sure that option passed in has value
-
-    Some options can be passed from the command line, using flags, like
-    --version or be retrieved from config file. Function makes sure
-    that passed option has a value.
-
-    """
-    if not value:
-        raise click.UsageError(
-            '"%(name)s" is required. Add to config or pass with %(flag)s '
-            'option.' % {'name': param.name,
-                         'flag': param.opts})
-    return value
+logger = logging.getLogger('bamp')
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
+@click.option('--debug', help='Enable debug flag.', is_flag=True,
+              expose_value=False, callback=enable_debug, is_eager=True)
+@click.option('--config', type=click.Path(exists=True, dir_okay=False),
+              help='Path to a config file.',
+              callback=read_config, expose_value=False)
 @click.option('-v', '--version', help='Current version of the program.',
               callback=required)
 @click.option('files', '-f', '--file',
@@ -43,8 +33,12 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.argument('part', nargs=1,
                 type=click.Choice(['patch', 'minor', 'major']))
 def bamp(version, part, files):
-    click.echo(bamp_version(version, part, files))
+    new_version = bamp_version(version, part)
+    success = bamp_files(version, new_version, files)
+    if success:
+        pass
+        # TODO: VC goes here, if config is set
+    click.echo(new_version)
 
 if __name__ == '__main__':
-    config = parse_config(find_config())
-    bamp(default_map=make_default_map(config))
+    bamp()

@@ -16,7 +16,6 @@ VERSION_PARTS = ('major', 'minor', 'patch')
 VERSION_SEPARATOR = '.'
 
 logger = logging.getLogger(__name__)
-logging.basicConfig()
 
 
 def split_version(version):
@@ -46,13 +45,13 @@ def join_version(version_list):
 
 
 def _bamp(version, part):
-    """Bump version according to semantic versioning
+    """Bamp version according to semantic versioning
 
-    :param version: version to bump
+    :param version: version to bamp
     :type version: iterable
-    :param part: name of the part to be bumped
+    :param part: name of the part to be bamped
     :type part: str
-    :returns: bumped version
+    :returns: bamped version
     :rtype: namedtuple SplitVersion
 
     """
@@ -71,8 +70,18 @@ def _bamp(version, part):
     return OrderedDict(zip(VERSION_PARTS, new_values))
 
 
-def bamp_version(version, part, files):
-    # TODO: checkes done here
+def bamp_version(version, part):
+    """Bamp part of the version according to SemVer
+
+    :param version: version to bamp
+    :type version: str
+    :param part: part of the version to be bamped
+    :type part: str
+    :raises: IncorrectPart
+    :returns: version with one part bamped
+    :rtype: str
+
+    """
     version = split_version(version)
     if part not in version:
         raise IncorrectPart(
@@ -80,11 +89,3 @@ def bamp_version(version, part, files):
 
     bamped = _bamp(version, part)
     return join_version(bamped.values())
-
-
-def _files_bamper(version, part, files):
-    # bamp files
-    # make temp files for files
-    # bamp all files + config
-    # if everything ok replace files
-    pass

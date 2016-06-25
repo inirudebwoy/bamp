@@ -4,3 +4,7 @@ class IncorrectPart(Exception):
 
 class MissingConfigParser(Exception):
     pass
+
+
+class ErrorConfigParsing(Exception):
+    pass
