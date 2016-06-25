@@ -34,8 +34,10 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
                 type=click.Choice(['patch', 'minor', 'major']))
 def bamp(version, part, files):
     new_version = bamp_version(version, part)
-    bamp_files(version, new_version, files)
-    # TODO: VC goes here, if config is set
+    success = bamp_files(version, new_version, files)
+    if success:
+        pass
+        # TODO: VC goes here, if config is set
     click.echo(new_version)
 
 if __name__ == '__main__':

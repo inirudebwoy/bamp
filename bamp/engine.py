@@ -45,13 +45,13 @@ def join_version(version_list):
 
 
 def _bamp(version, part):
-    """Bump version according to semantic versioning
+    """Bamp version according to semantic versioning
 
-    :param version: version to bump
+    :param version: version to bamp
     :type version: iterable
-    :param part: name of the part to be bumped
+    :param part: name of the part to be bamped
     :type part: str
-    :returns: bumped version
+    :returns: bamped version
     :rtype: namedtuple SplitVersion
 
     """
@@ -82,7 +82,6 @@ def bamp_version(version, part):
     :rtype: str
 
     """
-    # TODO: checkes done here
     version = split_version(version)
     if part not in version:
         raise IncorrectPart(
