@@ -38,7 +38,8 @@ def bamp(version, part, files):
     if success:
         pass
         # TODO: VC goes here, if config is set
-    click.echo(new_version)
+    click.secho('New version: {0}'.format(new_version),
+                fg='green')
 
 if __name__ == '__main__':
     bamp()
