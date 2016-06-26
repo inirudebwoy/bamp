@@ -7,7 +7,7 @@ setup(name='bamp',
       install_requires=['Click'],
       entry_points='''
       [console_scripts]
-      bamp=bamp.main:cli
+      bamp=bamp.main:bamp
       ''',
       packages=find_packages(),
       include_package_data=True,
