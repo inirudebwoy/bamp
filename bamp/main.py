@@ -1,7 +1,8 @@
 '''
 TODO: is newline on windows different for python?
 TODO: dry-run? use logging for printing
-
+TODO: treat PART as a custom command
+       http://click.pocoo.org/6/commands/#custom-multi-commands ?
 '''
 import logging
 import logging.config
@@ -11,6 +12,7 @@ import click
 from bamp.engine import bamp_version
 from bamp.persistence import bamp_files
 from bamp.callbacks import enable_debug, read_config, required
+from bamp.vcs import create_commit
 
 logger = logging.getLogger('bamp')
 
@@ -30,14 +32,15 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
                     'Can be used multiple times.'),
               type=click.Path(exists=True), multiple=True,
               callback=required)
+@click.option('vcs', '-V', '--vcs', help='Specify VCS to use.', default='git')
 @click.argument('part', nargs=1,
                 type=click.Choice(['patch', 'minor', 'major']))
-def bamp(version, part, files):
+def bamp(version, part, files, vcs):
     new_version = bamp_version(version, part)
     success = bamp_files(version, new_version, files)
     if success:
-        pass
-        # TODO: VC goes here, if config is set
+        # make commit
+        create_commit(vcs, 'Bamping', files)
     click.secho('New version: {0}'.format(new_version),
                 fg='green')
 
