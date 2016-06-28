@@ -33,11 +33,14 @@ def read_config(ctx, param, value):
 
     """
     config_path = value or find_config()
-    try:
-        config = prepare_config(config_path)
-    except ErrorConfigParsing:
-        logger.exception('Could not parse the config file.')
-        sys.exit(1)
+    config = {}
+    if config_path:
+
+        try:
+            config = prepare_config(config_path)
+        except ErrorConfigParsing:
+            logger.exception('Could not parse the config file.')
+            sys.exit(1)
 
     ctx.default_map = make_default_map(config)
     return value

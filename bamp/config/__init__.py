@@ -6,14 +6,17 @@ from bamp.exc import MissingConfigParser, ErrorConfigParsing
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_CONFIG = {'vcs': 'git',
+                  'commit': False,
+                  'tag': False,
+                  'files': []}
+
 
 def find_config():
     """Locate config file
 
-    TODO: this function should run only if config has not been passed from
-    command line.
-    Should this function be defined in config plugin file?
-    Would it be better to have an object of config, it would mean the state could be
+    TODO: Should this function be defined in config plugin file?
+    TODO: Would it be better to have an object of config, it would mean the state could be
     kept during whole execution. Is it really needed?
 
     :returns: config filename or None
@@ -36,7 +39,7 @@ def make_default_map(config):
     :rtype: dict
 
     """
-    return config.get('bamp', {})
+    return config.get('bamp', DEFAULT_CONFIG)
 
 
 def get_config(filename):
