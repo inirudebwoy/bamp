@@ -5,6 +5,7 @@ TODO: treat PART as a custom command
        http://click.pocoo.org/6/commands/#custom-multi-commands ?
 TODO: six module?
 '''
+import os
 import sys
 import logging
 import logging.config
@@ -19,11 +20,6 @@ from bamp.vcs import create_commit, is_tree_clean, get_repo, make_commit_message
 logger = logging.getLogger('bamp')
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
-
-
-import os
-
-
 ROOT_PATH = os.path.abspath(os.path.curdir)
 
 
@@ -41,9 +37,11 @@ ROOT_PATH = os.path.abspath(os.path.curdir)
               type=click.Path(exists=True), multiple=True,
               callback=required)
 @click.option('vcs', '-V', '--vcs', help='Specify VCS to use.', default='git')
+@click.option('allow_dirty', '-a', '--allow-dirty', is_flag=True)
+@click.option('commit', '-c', '--commit')
 @click.argument('part', nargs=1,
                 type=click.Choice(['patch', 'minor', 'major']))
-def bamp(version, part, files, vcs):
+def bamp(version, part, files, vcs, allow_dirty, commit):
     ctx = click.get_current_context()
     result, errors = sanity_checks(ROOT_PATH)
     # TODO: create a decorator to run a function and process the result
@@ -59,7 +57,7 @@ def bamp(version, part, files, vcs):
         click.secho(', '.join(errors))
         sys.exit(1)
 
-    if success and ctx.default_map.get('commit'):
+    if success and ctx.params.get('commit'):
         repo = get_repo(ROOT_PATH)
         message = make_commit_message()
         create_commit(vcs, message, files)
@@ -69,9 +67,10 @@ def bamp(version, part, files, vcs):
 
 def sanity_checks(root_path):
     ctx = click.get_current_context()
-    clean, error = is_tree_clean(ctx.default_map.get('vcs'), root_path)
-    if not clean:
-        return clean, error
+    if not ctx.params.get('allow_dirty'):
+        clean, error = is_tree_clean(ctx.params.get('vcs'), root_path)
+        if not clean:
+            return clean, error
 
     return True, ''
 

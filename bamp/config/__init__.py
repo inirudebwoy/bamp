@@ -9,7 +9,8 @@ logger = logging.getLogger(__name__)
 DEFAULT_CONFIG = {'vcs': 'git',
                   'commit': False,
                   'tag': False,
-                  'files': []}
+                  'files': [],
+                  'allow_dirty': False}
 
 
 def find_config():
@@ -39,7 +40,6 @@ def make_default_map(config):
     :rtype: dict
 
     """
-    # TODO: this should merge values retrieved from config with defaults
     # TODO: convert 'bools' into bools
     cfg_dict = config.get('bamp', {})
     DEFAULT_CONFIG.update(cfg_dict)
