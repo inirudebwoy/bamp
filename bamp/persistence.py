@@ -5,12 +5,15 @@ from io import open
 from tempfile import mkstemp
 from collections import namedtuple
 
+from bamp.exc import VersionNotFound
+from bamp.helpers.ui import verify_response
 
 PathPair = namedtuple('PathPair', ['orig', 'copy'])
 
 logger = logging.getLogger(__name__)
 
 
+@verify_response
 def bamp_files(cur_version, new_version, files):
     """Replace current version with new version in every file from list
     of files.
@@ -23,23 +26,32 @@ def bamp_files(cur_version, new_version, files):
     :type new_version: str
     :param files: list of paths which to bamp
     :type files: list
+    :returns: True, [] if env is sane, False and list of error message
+              otherwise
+    :rtype: tuple(bool, list(str))
+
 
     """
     bamped_files = []
+    errors = []
     for f in files:
         try:
             bamped_files.append(_file_bamper(cur_version, new_version, f))
         except IOError:
-            logger.exception('Error accessing file: %s', f)
-            logger.error('Bamping cancelled.')
-            return False  # abort saving
+            errors.append('Error accessing file: {0}'.format(f))
+        except VersionNotFound:
+            errors.append(
+                'Version {0} not found in {1}'.format(cur_version, f))
+
+    if errors:
+        return False, errors
 
     for orig, bamped in bamped_files:
         copy2(bamped, orig)
 
     # clear temps
     _rm_files([p.copy for p in bamped_files])
-    return True
+    return True, []
 
 
 def _rm_files(file_list):
@@ -81,8 +93,6 @@ def _file_bamper(cur_version, new_version, file_path):
                     line = line.replace(cur_version, new_version)
                 cf.write(line)
             if not found:
-                logger.info(
-                    "Couldn't find current version '%s' in file: %s",
-                    cur_version, of.name)
+                raise VersionNotFound()
 
     return PathPair(file_path, copy_path)

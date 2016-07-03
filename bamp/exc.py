@@ -8,3 +8,11 @@ class MissingConfigParser(Exception):
 
 class ErrorConfigParsing(Exception):
     pass
+
+
+class MissingVcsModule(Exception):
+    pass
+
+
+class VersionNotFound(Exception):
+    pass
