@@ -71,5 +71,7 @@ def sanity_checks(root_path):
     if not clean:
         return clean, error
 
+    return True, ''
+
 if __name__ == '__main__':
     bamp()
