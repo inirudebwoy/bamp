@@ -12,3 +12,7 @@ class ErrorConfigParsing(Exception):
 
 class MissingVcsModule(Exception):
     pass
+
+
+class VersionNotFound(Exception):
+    pass

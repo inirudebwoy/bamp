@@ -5,6 +5,7 @@ from io import open
 from tempfile import mkstemp
 from collections import namedtuple
 
+from bamp.exc import VersionNotFound
 
 PathPair = namedtuple('PathPair', ['orig', 'copy'])
 
@@ -34,9 +35,9 @@ def bamp_files(cur_version, new_version, files):
         try:
             bamped_files.append(_file_bamper(cur_version, new_version, f))
         except IOError:
-            logger.exception('Error accessing file: %s', f)
-            logger.error('Bamping cancelled.')
-            errors.append('Error accessing file: %s'.format(f))
+            errors.append('Error accessing file: {0}'.format(f))
+        except VersionNotFound:
+            errors.append('Version {0} not found in {1}'.format(cur_version, f))
 
     if errors:
         return False, errors
@@ -88,9 +89,6 @@ def _file_bamper(cur_version, new_version, file_path):
                     line = line.replace(cur_version, new_version)
                 cf.write(line)
             if not found:
-                logger.info(
-                    "Couldn't find current version '%s' in file: %s",
-                    cur_version, of.name)
-                raise IOError()
+                raise VersionNotFound()
 
     return PathPair(file_path, copy_path)
