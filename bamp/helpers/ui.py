@@ -27,13 +27,16 @@ def _echo_exit(messages, exit_, color):
     Method calls sys.exit() if exit_ is different than 0.
 
     :param messages: list of messages to be printed out
-    :type messages: list(str)
+    :type messages: list(str) or str
     :param exit_: exit code
     :type exit_: int
     :param color: color of text, 'red' or 'green'
     :type color: str
 
     """
+    if isinstance(messages, str):
+        messages = [messages]
+
     for m in messages:
         click.secho(m, fg=color)
     if exit_:
