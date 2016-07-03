@@ -46,7 +46,9 @@ ROOT_PATH = os.path.abspath(os.path.curdir)
 def bamp(version, part, files, vcs):
     ctx = click.get_current_context()
     result, errors = sanity_checks(ROOT_PATH)
+    # TODO: create a decorator to run a function and process the result
     if not result and errors:
+        # TODO: print and exit function
         click.secho(errors, fg='red')
         sys.exit(1)
 

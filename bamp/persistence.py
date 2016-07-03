@@ -17,29 +17,36 @@ def bamp_files(cur_version, new_version, files):
     If there is a problem with accessing any one of the files, operation is
     aborted and no changes are saved.
 
+    TODO: update
     :param cur_version: current version
     :type cur_version: str
     :param new_version: new version, replacing current
     :type new_version: str
     :param files: list of paths which to bamp
     :type files: list
+    :returns:
+    :rtype: tuple
 
     """
     bamped_files = []
+    errors = []
     for f in files:
         try:
             bamped_files.append(_file_bamper(cur_version, new_version, f))
         except IOError:
             logger.exception('Error accessing file: %s', f)
             logger.error('Bamping cancelled.')
-            return False  # abort saving
+            errors.append('Error accessing file: %s'.format(f))
+
+    if errors:
+        return False, errors
 
     for orig, bamped in bamped_files:
         copy2(bamped, orig)
 
     # clear temps
     _rm_files([p.copy for p in bamped_files])
-    return True
+    return True, []
 
 
 def _rm_files(file_list):
