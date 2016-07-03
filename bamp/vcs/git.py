@@ -11,10 +11,6 @@ def is_tree_clean(repo):
 
 
 def create_commit(repo, files, message):
-    return
-    porcelain.add(repo, files)
+    for f in files:
+        porcelain.add(repo, f)
     porcelain.commit(repo, message)
-
-
-def create_tag(commit, tag):
-    pass

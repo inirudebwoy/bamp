@@ -6,11 +6,14 @@ from bamp.exc import MissingConfigParser, ErrorConfigParsing
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_CONFIG = {'vcs': 'git',
-                  'commit': False,
-                  'tag': False,
-                  'files': [],
-                  'allow_dirty': False}
+DEFAULT_CONFIG = {
+    'vcs': 'git',
+    'commit': False,
+    'message': 'Bamp version: {current_version} -> {new_version}',
+    'tag': False,
+    'files': [],
+    'allow_dirty': False
+}
 
 
 def find_config():

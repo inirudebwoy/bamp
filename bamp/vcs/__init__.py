@@ -16,14 +16,9 @@ def _get_vcs_module(vcs_type):
     return vcs_module
 
 
-def repo(repo_path, vcs_type):
-    vcs = _get_vcs_module(vcs_type)
-    return vcs.get_repo(repo_path)
-
-
 def create_commit(vcs_type, files, message):
     vcs = _get_vcs_module(vcs_type)
-    repo = get_repo('.')
+    repo = vcs.get_repo('.')
     return vcs.create_commit(repo, files, message)
 
 
@@ -35,9 +30,6 @@ def is_tree_clean(vcs_type, repo_path):
     return True, ''
 
 
-def get_repo(repo_path):
-    return
-
-
-def make_commit_message():
-    return
+def make_message(message, current_version, new_version):
+    return message.format(current_version=current_version,
+                          new_version=new_version)

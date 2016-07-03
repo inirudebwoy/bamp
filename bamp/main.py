@@ -15,7 +15,7 @@ import click
 from bamp.engine import bamp_version
 from bamp.persistence import bamp_files
 from bamp.callbacks import enable_debug, read_config, required
-from bamp.vcs import create_commit, is_tree_clean, get_repo, make_commit_message
+from bamp.vcs import create_commit, is_tree_clean, make_message
 
 logger = logging.getLogger('bamp')
 
@@ -36,13 +36,13 @@ ROOT_PATH = os.path.abspath(os.path.curdir)
                     'Can be used multiple times.'),
               type=click.Path(exists=True), multiple=True,
               callback=required)
-@click.option('vcs', '-V', '--vcs', help='Specify VCS to use.', default='git')
+@click.option('vcs', '-V', '--vcs', help='Specify VCS to use.')
 @click.option('allow_dirty', '-a', '--allow-dirty', is_flag=True)
-@click.option('commit', '-c', '--commit')
+@click.option('commit', '-c', '--commit', is_flag=True)
+@click.option('message', '-m', '--message')
 @click.argument('part', nargs=1,
                 type=click.Choice(['patch', 'minor', 'major']))
-def bamp(version, part, files, vcs, allow_dirty, commit):
-    ctx = click.get_current_context()
+def bamp(version, part, files, vcs, allow_dirty, commit, message):
     result, errors = sanity_checks(ROOT_PATH)
     # TODO: create a decorator to run a function and process the result
     if not result and errors:
@@ -54,13 +54,12 @@ def bamp(version, part, files, vcs, allow_dirty, commit):
     # success = bamp_files(version, new_version, files)
     success, errors = bamp_files(version, new_version, files)
     if not success and errors:
-        click.secho(', '.join(errors))
+        click.secho(', '.join(errors), fg='red')
         sys.exit(1)
 
-    if success and ctx.params.get('commit'):
-        repo = get_repo(ROOT_PATH)
-        message = make_commit_message()
-        create_commit(vcs, message, files)
+    if commit:
+        commit_message = make_message(message, version, new_version)
+        create_commit(vcs, files, commit_message)
     click.secho('New version: {0}'.format(new_version),
                 fg='green')
 
