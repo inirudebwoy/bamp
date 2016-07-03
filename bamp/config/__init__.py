@@ -39,7 +39,11 @@ def make_default_map(config):
     :rtype: dict
 
     """
-    return config.get('bamp', DEFAULT_CONFIG)
+    # TODO: this should merge values retrieved from config with defaults
+    # TODO: convert 'bools' into bools
+    cfg_dict = config.get('bamp', {})
+    DEFAULT_CONFIG.update(cfg_dict)
+    return DEFAULT_CONFIG
 
 
 def get_config(filename):
