@@ -1,8 +1,5 @@
-from StringIO import StringIO
-try:
-    import ConfigParser as configparser
-except ImportError:
-    import configparser
+from six import StringIO
+from six.moves import configparser
 
 from bamp.config.ini import config_dump
 
