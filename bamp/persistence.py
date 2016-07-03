@@ -91,5 +91,6 @@ def _file_bamper(cur_version, new_version, file_path):
                 logger.info(
                     "Couldn't find current version '%s' in file: %s",
                     cur_version, of.name)
+                raise IOError()
 
     return PathPair(file_path, copy_path)
