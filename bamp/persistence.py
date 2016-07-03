@@ -18,15 +18,16 @@ def bamp_files(cur_version, new_version, files):
     If there is a problem with accessing any one of the files, operation is
     aborted and no changes are saved.
 
-    TODO: update
     :param cur_version: current version
     :type cur_version: str
     :param new_version: new version, replacing current
     :type new_version: str
     :param files: list of paths which to bamp
     :type files: list
-    :returns:
-    :rtype: tuple
+    :returns: True, [] if env is sane, False and list of error message
+              otherwise
+    :rtype: tuple(bool, list(str))
+
 
     """
     bamped_files = []
@@ -37,7 +38,8 @@ def bamp_files(cur_version, new_version, files):
         except IOError:
             errors.append('Error accessing file: {0}'.format(f))
         except VersionNotFound:
-            errors.append('Version {0} not found in {1}'.format(cur_version, f))
+            errors.append(
+                'Version {0} not found in {1}'.format(cur_version, f))
 
     if errors:
         return False, errors

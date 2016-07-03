@@ -51,7 +51,6 @@ def bamp(version, part, files, vcs, allow_dirty, commit, message):
         sys.exit(1)
 
     new_version = bamp_version(version, part)
-    # success = bamp_files(version, new_version, files)
     success, errors = bamp_files(version, new_version, files)
     if not success and errors:
         click.secho(', '.join(errors), fg='red')
@@ -65,6 +64,14 @@ def bamp(version, part, files, vcs, allow_dirty, commit, message):
 
 
 def sanity_checks(root_path):
+    """Run environment, configuration sanity checks
+
+    :param root_path: path to the vcs repo dir
+    :type root_path: str
+    :returns: True, '' if env is sane, False and error message otherwise
+    :rtype: tuple(bool, str)
+
+    """
     ctx = click.get_current_context()
     if not ctx.params.get('allow_dirty'):
         clean, error = is_tree_clean(ctx.params.get('vcs'), root_path)
