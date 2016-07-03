@@ -62,8 +62,8 @@ def is_tree_clean(vcs_type, repo_path):
     vcs = _get_vcs_module(vcs_type)
     clean = vcs.is_tree_clean(repo_path)
     if not clean:
-        return False, 'Directory is not clean. Commit or stash your changes.'
-    return True, ''
+        return False, ['Directory is not clean. Commit or stash your changes.']
+    return True, []
 
 
 def make_message(message, current_version, new_version):

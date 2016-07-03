@@ -6,7 +6,6 @@ TODO: treat PART as a custom command
 TODO: six module?
 '''
 import os
-import sys
 import logging
 import logging.config
 
@@ -14,8 +13,9 @@ import click
 
 from bamp.engine import bamp_version
 from bamp.persistence import bamp_files
-from bamp.callbacks import enable_debug, read_config, required
+from bamp.helpers.callbacks import enable_debug, read_config, required
 from bamp.vcs import create_commit, is_tree_clean, make_message
+from bamp.helpers.ui import verify_response, ok_exit
 
 logger = logging.getLogger('bamp')
 
@@ -43,28 +43,21 @@ ROOT_PATH = os.path.abspath(os.path.curdir)
 @click.argument('part', nargs=1,
                 type=click.Choice(['patch', 'minor', 'major']))
 def bamp(version, part, files, vcs, allow_dirty, commit, message):
-    result, errors = sanity_checks(ROOT_PATH)
-    # TODO: create a decorator to run a function and process the result
-    if not result and errors:
-        # TODO: print and exit function
-        click.secho(errors, fg='red')
-        sys.exit(1)
+    sanity_checks(ROOT_PATH)
 
     new_version = bamp_version(version, part)
-    success, errors = bamp_files(version, new_version, files)
-    if not success and errors:
-        click.secho(', '.join(errors), fg='red')
-        sys.exit(1)
+    bamp_files(version, new_version, files)
 
     if commit:
         commit_message = make_message(message, version, new_version)
         create_commit(vcs, files, commit_message)
-    click.secho('New version: {0}'.format(new_version),
-                fg='green')
+
+    ok_exit('New version: {0}'.format(new_version))
 
 
+@verify_response
 def sanity_checks(root_path):
-    """Run environment, configuration sanity checks
+    """Run environment and configuration sanity checks
 
     :param root_path: path to the vcs repo dir
     :type root_path: str
@@ -78,7 +71,7 @@ def sanity_checks(root_path):
         if not clean:
             return clean, error
 
-    return True, ''
+    return True, []
 
 if __name__ == '__main__':
     bamp()

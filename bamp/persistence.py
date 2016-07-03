@@ -6,12 +6,14 @@ from tempfile import mkstemp
 from collections import namedtuple
 
 from bamp.exc import VersionNotFound
+from bamp.helpers.ui import verify_response
 
 PathPair = namedtuple('PathPair', ['orig', 'copy'])
 
 logger = logging.getLogger(__name__)
 
 
+@verify_response
 def bamp_files(cur_version, new_version, files):
     """Replace current version with new version in every file from list
     of files.
