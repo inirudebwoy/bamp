@@ -56,7 +56,7 @@ def bamp(version, part, files, vcs):
     # success = bamp_files(version, new_version, files)
     success, errors = bamp_files(version, new_version, files)
     if not success and errors:
-        click.secho(errors)
+        click.secho(', '.join(errors))
         sys.exit(1)
 
     if success and ctx.default_map.get('commit'):
