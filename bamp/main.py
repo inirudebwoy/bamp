@@ -61,15 +61,12 @@ def sanity_checks(root_path):
 
     :param root_path: path to the vcs repo dir
     :type root_path: str
-    :returns: True, '' if env is sane, False and error message otherwise
+    :returns: True, [] if env is sane, False and error message otherwise
     :rtype: tuple(bool, str)
 
     """
     ctx = click.get_current_context()
-    if not ctx.params.get('allow_dirty'):
-        clean, error = is_tree_clean(ctx.params.get('vcs'), root_path)
-        if not clean:
-            return clean, error
+    is_tree_clean(ctx.params.get('vcs'), root_path)
 
     return True, []
 

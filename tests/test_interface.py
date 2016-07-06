@@ -48,9 +48,7 @@ def test_arg_part_with_version_with_existing_file():
             v.write('0.0.1')
         result = runner.invoke(bamp,
                                ['patch', '-v', '0.0.1', '-f', 'version.ini'])
-        import ipdb; ipdb.set_trace()
-        assert result.exit_code == 2
-        assert '"version.ini" does not exist' in result.output
+        assert result.exit_code == 0
 
 
 def test_arg_unsupported_part():
@@ -59,14 +57,3 @@ def test_arg_unsupported_part():
         result = runner.invoke(bamp, ['foobar'])
         assert result.exit_code == 2
         assert 'Invalid value for "part"' in result.output
-
-
-def test_arg_part_with_two_files():
-    runner = CliRunner()
-    with runner.isolated_filesystem():
-        result = runner.invoke(bamp, ['major', 'setup.py', 'tox.ini'])
-        assert result.exit_code == 0
-        assert 'setup.py' in result.output
-        assert 'tox.ini' in result.output
-
-# TODO: tests for config
