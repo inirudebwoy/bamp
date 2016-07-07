@@ -48,6 +48,7 @@ def create_commit(vcs_type, files, message):
     repo = vcs.get_repo('.')
     return vcs.create_commit(repo, files, message)
 
+
 @verify_response
 def is_tree_clean(vcs_type, repo_path):
     """Verify if repository is clean
@@ -65,9 +66,6 @@ def is_tree_clean(vcs_type, repo_path):
         return True, []
 
     vcs = _get_vcs_module(vcs_type)
-    if not vcs.repo_exists(repo_path):
-        return True, []
-
     clean = vcs.is_tree_clean(repo_path)
     if not clean:
         return False, ['Directory is not clean. Commit or stash your changes.']

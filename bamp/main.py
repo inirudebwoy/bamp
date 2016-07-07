@@ -3,7 +3,6 @@ TODO: is newline on windows different for python?
 TODO: dry-run? use logging for printing
 TODO: treat PART as a custom command
        http://click.pocoo.org/6/commands/#custom-multi-commands ?
-TODO: six module?
 '''
 import os
 import logging
@@ -66,7 +65,8 @@ def sanity_checks(root_path):
 
     """
     ctx = click.get_current_context()
-    is_tree_clean(ctx.params.get('vcs'), root_path)
+    if ctx.params.get('commit'):
+        is_tree_clean(ctx.params.get('vcs'), root_path)
 
     return True, []
 
