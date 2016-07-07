@@ -4,6 +4,23 @@ Module supporting Git vcs
 """
 
 from dulwich import porcelain
+from dulwich.repo import NotGitRepository
+
+
+def repo_exists(repo_path):
+    """Check if repo exists
+
+    :param repo_path: path to the repo
+    :type repo_path: str
+    :returns: True if exists, False otherwise
+    :rtype: bool
+
+    """
+    try:
+        get_repo(repo_path)
+    except NotGitRepository:
+        return False
+    return True
 
 
 def get_repo(repo_path):

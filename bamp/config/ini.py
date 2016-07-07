@@ -3,10 +3,7 @@ Module supporting INI type config files.
 
 """
 import logging
-try:
-    import ConfigParser as configparser
-except ImportError:
-    import configparser
+from six.moves import configparser
 
 from bamp.exc import ErrorConfigParsing
 
