@@ -2,25 +2,13 @@
 Module supporting Git vcs
 
 """
-
+import logging
 from dulwich import porcelain
 from dulwich.repo import NotGitRepository
 
+from bamp.exc import VCSException
 
-def repo_exists(repo_path):
-    """Check if repo exists
-
-    :param repo_path: path to the repo
-    :type repo_path: str
-    :returns: True if exists, False otherwise
-    :rtype: bool
-
-    """
-    try:
-        get_repo(repo_path)
-    except NotGitRepository:
-        return False
-    return True
+logger = logging.getLogger(__name__)
 
 
 def get_repo(repo_path):
@@ -32,7 +20,11 @@ def get_repo(repo_path):
     :rtype: dulwich.Repo
 
     """
-    return porcelain.open_repo(repo_path)
+    try:
+        return porcelain.open_repo(repo_path)
+    except NotGitRepository:
+        logger.exception('Unable to open repository.')
+        raise VCSException()
 
 
 def is_tree_clean(repo):
@@ -48,17 +40,18 @@ def is_tree_clean(repo):
     return not (status.unstaged or any(status.staged.values()))
 
 
-def create_commit(repo, files, message):
+def create_commit(repo_path, files, message):
     """Create a commit
 
-    :param repo: git repository
-    :type repo: dulwich.Repo
+    :param repo_path: path to git repo
+    :type repo_path: str
     :param files: list of files to be added to commit
     :type files: list
     :param message: commit message
     :type: str
 
     """
+    repo = get_repo(repo_path)
     for f in files:
         porcelain.add(repo, f)
     porcelain.commit(repo, message)

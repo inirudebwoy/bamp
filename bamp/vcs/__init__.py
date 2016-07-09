@@ -8,8 +8,8 @@ import importlib
 
 import click
 
-from bamp.exc import MissingVcsModule
-from bamp.helpers.ui import verify_response
+from bamp.exc import MissingVcsModule, VCSException
+from bamp.helpers.ui import verify_response, error_exit
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +26,7 @@ def _get_vcs_module(vcs_type):
         vcs_module = importlib.import_module(
             '{0}.{1}'.format(__name__, vcs_type))
     except ImportError:
+        logger.exception('Unable to find module supporting "%s".', vcs_type)
         raise MissingVcsModule()
     return vcs_module
 
@@ -44,9 +45,15 @@ def create_commit(vcs_type, files, message):
     :type message: str
 
     """
+    repo_path = '.'
     vcs = _get_vcs_module(vcs_type)
-    repo = vcs.get_repo('.')
-    return vcs.create_commit(repo, files, message)
+    try:
+        return vcs.create_commit(repo_path, files, message)
+    except VCSException:
+        logger.exception('Could not create a commit message "%s" '
+                         'for the repo "%s" under path "%s"',
+                         message, vcs_type, repo_path)
+        error_exit('Could not create a commit message.')
 
 
 @verify_response
