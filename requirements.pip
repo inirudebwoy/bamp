@@ -1,3 +1,4 @@
 click==6.3
 dulwich==0.13.0
 six==1.10.0
+dulwich==0.14.1
