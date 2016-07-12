@@ -104,7 +104,7 @@ def prepare_config(filename):
     try:
         conf_dict = config.prepare_config(filename)
     except ErrorConfigParsing:
-        logger.exception('Error parsing log.')
+        logger.exception('Error parsing config.')
         raise
 
     main_section = conf_dict.get('bamp', {})

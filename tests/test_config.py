@@ -1,7 +1,9 @@
 import pytest
 
-from bamp.config import DEFAULT_CONFIG, make_default_map, get_config_module
-from bamp.exc import MissingConfigParser
+import bamp
+from bamp.config import (
+    DEFAULT_CONFIG, make_default_map, get_config_module, prepare_config)
+from bamp.exc import MissingConfigParser, ErrorConfigParsing
 
 
 def test_empty_config():
@@ -42,3 +44,47 @@ def test_get_config_module_ini_ext():
 def test_get_config_module_unknown_ext():
     with pytest.raises(MissingConfigParser):
         get_config_module('setup.unknown')
+
+
+class ConfigMock(object):
+    def __init__(self, callable):
+        self._callable = callable
+
+    def prepare_config(self, filename):
+        return self._callable(filename)
+
+
+def test_prepare_config_parsing_error(monkeypatch):
+    def mockreturn(filename):
+        def raiser(filename):
+            raise ErrorConfigParsing
+        return ConfigMock(raiser)
+
+    monkeypatch.setattr(bamp.config, 'get_config_module', mockreturn)
+    with pytest.raises(ErrorConfigParsing):
+        prepare_config('config.ini')
+
+
+def test_prepare_config_add_configfile_empty_config(monkeypatch):
+    def mockreturn(filename):
+        return ConfigMock(lambda x: {})
+
+    monkeypatch.setattr(bamp.config, 'get_config_module', mockreturn)
+    assert prepare_config('config.ini') == {}
+
+
+def test_prepare_config_add_configfile_no_files_section(monkeypatch):
+    def mockreturn(filename):
+        return ConfigMock(lambda x: {'bamp': {}})
+
+    monkeypatch.setattr(bamp.config, 'get_config_module', mockreturn)
+    assert prepare_config('config.ini') == {'bamp': {}}
+
+
+def test_prepare_config_add_configfile_files_in_files_variable(monkeypatch):
+    def mockreturn(filename):
+        return ConfigMock(lambda x: {'bamp': {'files': []}})
+
+    monkeypatch.setattr(bamp.config, 'get_config_module', mockreturn)
+    assert prepare_config('config.ini') == {'bamp':
+                                            {'files': ['config.ini']}}
