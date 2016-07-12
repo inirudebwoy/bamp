@@ -63,28 +63,3 @@ def test_prepare_config_parsing_error(monkeypatch):
     monkeypatch.setattr(bamp.config, 'get_config_module', mockreturn)
     with pytest.raises(ErrorConfigParsing):
         prepare_config('config.ini')
-
-
-def test_prepare_config_add_configfile_empty_config(monkeypatch):
-    def mockreturn(filename):
-        return ConfigMock(lambda x: {})
-
-    monkeypatch.setattr(bamp.config, 'get_config_module', mockreturn)
-    assert prepare_config('config.ini') == {}
-
-
-def test_prepare_config_add_configfile_no_files_section(monkeypatch):
-    def mockreturn(filename):
-        return ConfigMock(lambda x: {'bamp': {}})
-
-    monkeypatch.setattr(bamp.config, 'get_config_module', mockreturn)
-    assert prepare_config('config.ini') == {'bamp': {}}
-
-
-def test_prepare_config_add_configfile_files_in_files_variable(monkeypatch):
-    def mockreturn(filename):
-        return ConfigMock(lambda x: {'bamp': {'files': []}})
-
-    monkeypatch.setattr(bamp.config, 'get_config_module', mockreturn)
-    assert prepare_config('config.ini') == {'bamp':
-                                            {'files': ['config.ini']}}

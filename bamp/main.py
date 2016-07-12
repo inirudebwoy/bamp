@@ -15,6 +15,7 @@ from bamp.persistence import bamp_files
 from bamp.helpers.callbacks import enable_debug, read_config, required
 from bamp.vcs import create_commit, is_tree_clean, make_message
 from bamp.helpers.ui import verify_response, ok_exit
+from bamp.config import add_config
 
 logger = logging.getLogger('bamp')
 
@@ -41,6 +42,7 @@ ROOT_PATH = os.path.abspath(os.path.curdir)
 @click.option('message', '-m', '--message')
 @click.argument('part', nargs=1,
                 type=click.Choice(['patch', 'minor', 'major']))
+@add_config
 def bamp(version, part, files, vcs, allow_dirty, commit, message):
     sanity_checks(ROOT_PATH)
 

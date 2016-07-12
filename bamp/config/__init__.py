@@ -1,6 +1,7 @@
 import logging
 import os.path
 import importlib
+from functools import wraps
 
 from bamp.exc import MissingConfigParser, ErrorConfigParsing
 
@@ -14,6 +15,22 @@ DEFAULT_CONFIG = {
     'files': [],
     'allow_dirty': False
 }
+
+
+def add_config(func):
+    """Decorator for adding config file to bamp list
+
+    In order to keep the latest version config file must be added
+    automatically to list of bamped files, if it exists of course.
+    """
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        conf = find_config()
+        files = kwargs.get('files')
+        if files and conf and conf not in files:
+            kwargs['files'] += (conf, )
+        return func(*args, **kwargs)
+    return wrapper
 
 
 def find_config():
@@ -106,9 +123,4 @@ def prepare_config(filename):
     except ErrorConfigParsing:
         logger.exception('Error parsing config.')
         raise
-
-    main_section = conf_dict.get('bamp', {})
-    if main_section:
-        files = main_section.get('files', [])
-        files.append(filename)
     return conf_dict
