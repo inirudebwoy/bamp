@@ -57,3 +57,13 @@ def test_arg_unsupported_part():
         result = runner.invoke(bamp, ['foobar'])
         assert result.exit_code == 2
         assert 'Invalid value for "part"' in result.output
+
+
+def test_with_commit_no_vcs():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        with open('version.ini', 'w') as v:
+            v.write('0.0.1')
+        result = runner.invoke(bamp, ['patch', '-v', '0.0.1', '-f', 'version.ini',
+                                      '-c'])
+        assert result.exit_code == 1

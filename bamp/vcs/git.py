@@ -23,8 +23,9 @@ def get_repo(repo_path):
     try:
         return porcelain.open_repo(repo_path)
     except NotGitRepository:
-        logger.exception('Unable to open repository.')
-        raise VCSException()
+        err_msg = 'Unable to open repository.'
+        logger.exception(err_msg)
+        raise VCSException(err_msg)
 
 
 def is_tree_clean(repo):
@@ -40,18 +41,17 @@ def is_tree_clean(repo):
     return not (status.unstaged or any(status.staged.values()))
 
 
-def create_commit(repo_path, files, message):
+def create_commit(repo, files, message):
     """Create a commit
 
-    :param repo_path: path to git repo
-    :type repo_path: str
+    :param repo: repository
+    :type repo: dulwich.Repo
     :param files: list of files to be added to commit
     :type files: list
     :param message: commit message
     :type: str
 
     """
-    repo = get_repo(repo_path)
     for f in files:
         porcelain.add(repo, f)
     porcelain.commit(repo, message)

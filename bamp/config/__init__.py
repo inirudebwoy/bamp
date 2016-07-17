@@ -3,6 +3,8 @@ import os.path
 import importlib
 from functools import wraps
 
+import click
+
 from bamp.exc import MissingConfigParser, ErrorConfigParsing
 
 logger = logging.getLogger(__name__)
@@ -20,8 +22,10 @@ DEFAULT_CONFIG = {
 def add_config(func):
     """Decorator for adding config file to bamp list
 
-    In order to keep the latest version config file must be added
-    automatically to list of bamped files, if it exists of course.
+    In order to keep the latest version in the config file.
+    The config file must be added automatically to list of bamped files,
+    if it exists of course.
+
     """
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -37,12 +41,15 @@ def find_config():
     """Locate config file
 
     TODO: Should this function be defined in config plugin file?
-    TODO: Would it be better to have an object of config, it would mean the state could be
-    kept during whole execution. Is it really needed?
+    TODO: Would it be better to have an object of config, it would mean the
+          state could be kept during whole execution. Is it really needed?
 
     :returns: config filename or None
 
     """
+    ctx = click.get_current_context()
+    if ctx.params.get('config'):
+        return ctx.params.get('config')
     if os.path.exists('bamp.cfg'):
         return 'bamp.cfg'
     elif os.path.exists('setup.cfg'):
@@ -124,3 +131,11 @@ def prepare_config(filename):
         logger.exception('Error parsing config.')
         raise
     return conf_dict
+
+
+def get_root_path():
+    conf = find_config()
+    root_path = os.path.abspath(os.path.curdir)
+    if conf:
+        root_path, _ = os.path.split(os.path.abspath(conf))
+    return root_path

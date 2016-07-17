@@ -10,6 +10,7 @@ import click
 
 from bamp.exc import MissingVcsModule, VCSException
 from bamp.helpers.ui import verify_response, error_exit
+from bamp.config import get_root_path
 
 logger = logging.getLogger(__name__)
 
@@ -45,14 +46,18 @@ def create_commit(vcs_type, files, message):
     :type message: str
 
     """
-    repo_path = '.'
+    root_path = get_root_path()
     vcs = _get_vcs_module(vcs_type)
     try:
-        return vcs.create_commit(repo_path, files, message)
-    except VCSException:
+        repo = vcs.get_repo(root_path)
+    except VCSException as e:
+        error_exit(e.message)
+    try:
+        return vcs.create_commit(repo, files, message)
+    except:
         logger.exception('Could not create a commit message "%s" '
                          'for the repo "%s" under path "%s"',
-                         message, vcs_type, repo_path)
+                         message, vcs_type, root_path)
         error_exit('Could not create a commit message.')
 
 
