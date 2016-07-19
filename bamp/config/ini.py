@@ -40,7 +40,7 @@ def config_dump(config):
         dict_item = {}
         for key_item, value_item in config.items(section):
             if '\n' in value_item:  # multiline
-                value_item = value_item.split()
+                value_item = tuple(value_item.split())
             dict_item[key_item] = value_item
         dict_config[section] = dict_item
     return dict_config
@@ -56,9 +56,6 @@ def prepare_config(filename):
     :raises: ErrorParsingConfig
 
     """
-    if not filename:
-        return {}
-
     try:
         config = load_config(filename)
     except configparser.Error:

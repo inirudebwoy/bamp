@@ -1,6 +1,9 @@
 import logging
 import os.path
 import importlib
+from functools import wraps
+
+import click
 
 from bamp.exc import MissingConfigParser, ErrorConfigParsing
 
@@ -16,16 +19,37 @@ DEFAULT_CONFIG = {
 }
 
 
+def add_config(func):
+    """Decorator for adding config file to bamp list
+
+    In order to keep the latest version in the config file.
+    The config file must be added automatically to list of bamped files,
+    if it exists of course.
+
+    """
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        conf = find_config()
+        files = kwargs.get('files')
+        if files and conf and conf not in files:
+            kwargs['files'] += (conf, )
+        return func(*args, **kwargs)
+    return wrapper
+
+
 def find_config():
     """Locate config file
 
     TODO: Should this function be defined in config plugin file?
-    TODO: Would it be better to have an object of config, it would mean the state could be
-    kept during whole execution. Is it really needed?
+    TODO: Would it be better to have an object of config, it would mean the
+          state could be kept during whole execution. Is it really needed?
 
     :returns: config filename or None
 
     """
+    ctx = click.get_current_context()
+    if ctx.params.get('config'):
+        return ctx.params.get('config')
     if os.path.exists('bamp.cfg'):
         return 'bamp.cfg'
     elif os.path.exists('setup.cfg'):
@@ -45,8 +69,9 @@ def make_default_map(config):
     """
     # TODO: convert 'bools' into bools
     cfg_dict = config.get('bamp', {})
-    DEFAULT_CONFIG.update(cfg_dict)
-    return DEFAULT_CONFIG
+    def_copy = DEFAULT_CONFIG.copy()
+    def_copy.update(cfg_dict)
+    return def_copy
 
 
 def get_config(filename):
@@ -103,11 +128,14 @@ def prepare_config(filename):
     try:
         conf_dict = config.prepare_config(filename)
     except ErrorConfigParsing:
-        logger.exception('Error parsing log.')
+        logger.exception('Error parsing config.')
         raise
-
-    main_section = conf_dict.get('bamp', {})
-    if main_section:
-        files = main_section.get('files', [])
-        files.append(filename)
     return conf_dict
+
+
+def get_root_path():
+    conf = find_config()
+    root_path = os.path.abspath(os.path.curdir)
+    if conf:
+        root_path, _ = os.path.split(os.path.abspath(conf))
+    return root_path

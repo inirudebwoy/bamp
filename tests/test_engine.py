@@ -7,11 +7,6 @@ from bamp.engine import (split_version, join_version, _bamp,
 from bamp.exc import IncorrectPart
 
 
-def make_version(values):
-    """Create version object"""
-    return OrderedDict(zip(('major', 'minor', 'patch'), values))
-
-
 def test_split_simple():
     result = split_version('0.0.1')
     assert result.get('major') == 0

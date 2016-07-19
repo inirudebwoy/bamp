@@ -4,7 +4,6 @@ TODO: dry-run? use logging for printing
 TODO: treat PART as a custom command
        http://click.pocoo.org/6/commands/#custom-multi-commands ?
 '''
-import os
 import logging
 import logging.config
 
@@ -15,11 +14,11 @@ from bamp.persistence import bamp_files
 from bamp.helpers.callbacks import enable_debug, read_config, required
 from bamp.vcs import create_commit, is_tree_clean, make_message
 from bamp.helpers.ui import verify_response, ok_exit
+from bamp.config import add_config, get_root_path
 
 logger = logging.getLogger('bamp')
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
-ROOT_PATH = os.path.abspath(os.path.curdir)
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
@@ -27,7 +26,7 @@ ROOT_PATH = os.path.abspath(os.path.curdir)
               expose_value=False, callback=enable_debug, is_eager=True)
 @click.option('--config', type=click.Path(exists=True, dir_okay=False),
               help='Path to a config file.',
-              callback=read_config, expose_value=False)
+              callback=read_config)
 @click.option('-v', '--version', help='Current version of the program.',
               callback=required)
 @click.option('files', '-f', '--file',
@@ -41,8 +40,10 @@ ROOT_PATH = os.path.abspath(os.path.curdir)
 @click.option('message', '-m', '--message')
 @click.argument('part', nargs=1,
                 type=click.Choice(['patch', 'minor', 'major']))
-def bamp(version, part, files, vcs, allow_dirty, commit, message):
-    sanity_checks(ROOT_PATH)
+@add_config
+def bamp(version, part, files, vcs, allow_dirty, commit, message, config):
+    root_path = get_root_path()
+    sanity_checks(root_path)
 
     new_version = bamp_version(version, part)
     bamp_files(version, new_version, files)

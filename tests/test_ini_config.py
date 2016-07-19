@@ -33,7 +33,7 @@ def test_one_section_multiline_value():
                          '  leicester\n'
                          '  cheddar')
     assert {'market':
-            {'cheeses': ['leicester', 'cheddar']}} == config_dump(config)
+            {'cheeses': ('leicester', 'cheddar')}} == config_dump(config)
 
 
 def test_two_sections_one_empty():
@@ -44,7 +44,7 @@ def test_two_sections_one_empty():
                          '  cheddar')
     assert {'empty': {},
             'market':
-            {'cheeses': ['leicester', 'cheddar']}} == config_dump(config)
+            {'cheeses': ('leicester', 'cheddar')}} == config_dump(config)
 
 
 def test_two_sections_both_multiline_value():
@@ -57,9 +57,6 @@ def test_two_sections_both_multiline_value():
                          '  brown\n'
                          '  size9')
     assert {'market':
-            {'cheeses': ['leicester', 'cheddar']},
+            {'cheeses': ('leicester', 'cheddar')},
             'fire_department':
-            {'shoes': ['brown', 'size9']}} == config_dump(config)
-
-
-
+            {'shoes': ('brown', 'size9')}} == config_dump(config)
