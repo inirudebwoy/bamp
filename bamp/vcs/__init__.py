@@ -51,7 +51,7 @@ def create_commit(vcs_type, files, message):
     try:
         repo = vcs.get_repo(root_path)
     except VCSException as e:
-        error_exit(e.message)
+        error_exit(e.args)
     try:
         return vcs.create_commit(repo, files, message)
     except:
