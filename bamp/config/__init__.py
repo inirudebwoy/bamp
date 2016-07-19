@@ -67,6 +67,8 @@ def make_default_map(config):
     :rtype: dict
 
     """
+    # TODO: click flag is string? commit
+    import ipdb; ipdb.set_trace()
     # TODO: convert 'bools' into bools
     cfg_dict = config.get('bamp', {})
     def_copy = DEFAULT_CONFIG.copy()
