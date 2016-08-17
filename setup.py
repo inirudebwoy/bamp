@@ -3,15 +3,17 @@ from setuptools import setup, find_packages
 
 
 setup(name='bamp',
-      version='0.0.2',
+      version='0.0.1',
       install_requires=['Click'],
       entry_points='''
       [console_scripts]
       bamp=bamp.main:bamp
       ''',
       packages=find_packages(),
+      long_description='Bamp version of your packages according to semantic versioning. Automagically create commits and tags.',
       include_package_data=True,
-      description='Bump version according to semantic versioning',
+      zip_safe=True,
+      description='Bamp version according to semantic versioning',
       author='Michał Klich',
       author_email='michal@michalklich.com',
       url='https://github.com/inirudebwoy/bamp',
