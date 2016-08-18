@@ -12,7 +12,7 @@ What does it do?
 =====================
 Bamp saves you precious time by bamping version in all configured files, creating
 commit and tag (coming this fall) with one simple command.
-Bamp follows SemVer when bamping versions, bringing a bit of sanity into this
+Bamp follows [SemVer](http://semver.org/) when bamping versions, bringing a bit of sanity into this
 world of dependencies.
 
 Quick start
@@ -63,8 +63,46 @@ Example `bamp.cfg` config file.
     vcs=git
     commit=True
     message=Bamp version: {current_version} -> {new_version}
-    tag=False
     allow_dirty=False
 
+All the options can be passed as arguments to `bamp` executable. If one would like
+to bamp minor part in a file with custom message would do it like this.
 
-All the options can be passed as arguments to `bamp` executable.
+    bamp minor --version 2.15.10 --files setup.py --commit --message "Bamping!"
+
+allow_dirty | -a/--allow-dirty
+-------------------------------------
+Flag indicating if bamp can create a commit in a dirty repository.
+
+    allow_dirty=False
+
+commit | -c/--commit
+------------------------
+Commit message to be used when bamping. Following variables will be substituted:
+
+* current_version - for the version before bamping
+* new_version - for the version after bamping
+
+    message=Bamp version: {current\_version} -> {new\_version}
+
+files | -f/--files
+----------------------
+List of path files which will be bamped. It is possible to specify more than one path.
+`bamp` will check if each of the paths exists before proceeding.
+
+    files=
+        setup.py
+        src/__init__.py
+
+message | -m/--message
+---------------------------
+
+vcs | -V/--vcs
+-----------------
+
+version | -v/--version
+---------------------------
+This allows to set the version number. This number will be seeked in files and
+bamped accordingly. Bamp fails if the version can not be located.
+
+    version=0.1.0
