@@ -78,12 +78,10 @@ Flag indicating if bamp can create a commit in a dirty repository.
 
 commit | -c/--commit
 ------------------------
-Commit message to be used when bamping. Following variables will be substituted:
+Flag for creating a commit. If set to true bamp will use a default commit message or
+use one provided via `-m/--message` argument or taken from the config file.
 
-* current_version - for the version before bamping
-* new_version - for the version after bamping
-
-    message=Bamp version: {current\_version} -> {new\_version}
+    commit=True
 
 files | -f/--files
 ----------------------
@@ -96,9 +94,18 @@ List of path files which will be bamped. It is possible to specify more than one
 
 message | -m/--message
 ---------------------------
+Commit message to be used when bamping. Following variables will be substituted:
+
+* current_version - for the version before bamping
+* new_version - for the version after bamping
+
+    message=Bamp version: {current\_version} -> {new\_version}
 
 vcs | -V/--vcs
 -----------------
+Set version control which is used. Only git is supported at this time.
+
+    vcs=git
 
 version | -v/--version
 ---------------------------
