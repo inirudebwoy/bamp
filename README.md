@@ -24,27 +24,27 @@ to bamp and the current version to minimise the effort.
 
 * increasing the `minor` part of the version.
 
-    $ bamp minor
-    New version: 0.1.0
+        $ bamp minor
+        New version: 0.1.0
 
 * increasing the `patch` part of the version.
 
-    $ bamp patch
-    New version: 0.1.1
+        $ bamp patch
+        New version: 0.1.1
 
 * increasing the `major` part of the version.
 
-    $ bamp major
-    New version: 1.0.0
+        $ bamp major
+        New version: 1.0.0
 
 * increasing the `minor` part of the version with git commit.
 
-    $ bamp minor --commit
-    New version: 1.1.0
+        $ bamp minor --commit
+        New version: 1.1.0
 
 * increasing the `patch` part of the version with git commit and custom message.
 
-    $ bamp patch --commit --message "Bamping!"
+        $ bamp patch --commit --message "Bamping!"
 
 Configuration
 =================
@@ -94,12 +94,14 @@ List of path files which will be bamped. It is possible to specify more than one
 
 message | -m/--message
 ---------------------------
-Commit message to be used when bamping. Following variables will be substituted:
+Commit message to be used when bamping.
 
+    message=Bamp version: {current\_version} -> {new\_version}
+
+Following variables will be substituted:
 * current_version - for the version before bamping
 * new_version - for the version after bamping
 
-    message=Bamp version: {current\_version} -> {new\_version}
 
 vcs | -V/--vcs
 -----------------
