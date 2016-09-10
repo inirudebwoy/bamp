@@ -2,8 +2,14 @@ language: python
 env:
 - TOXENV=py27
 - TOXENV=py34
-# - TOXENV=py35
-# disable until fixed
-# https://github.com/travis-ci/travis-ci/issues/4794
 install: pip install tox
 script: tox
+deploy:
+  provider: pypi
+  user: michal.klich
+  on:
+    tags: true
+    repo: inirudebwoy/bamp
+  distributions: sdist bdist_wheel
+  password:
+    secure: Yp0CO2yf5aZUpAyuRoZIm6kKk8fp/bs7QFRzggVvvXrjPi89fGz6qZOvDbJya3fJgAnrRzPJrJrXqbjExA9icE5eSqihPaW5JeKF7pdf9ZOkofYAuGmApyzkRT5AmQ42LfA7D97ry4fK/RxLOKaxm2r/O0zLJlYK+uMuAVCHxUuwFOYZ2hNOVtVpQYaQbB+8ZBi81uDBF9HImM6XvwyGmaF8OhAHvfnDmNj8riOTN2AvNIJJlSWIJ41mf5QU6PL5/3kS0/JBdEdVCs8tsf7ZDosmVfXvfa4LlJh+IY7MOHxBM0LLxmD3vYzJF1Ecv30T76ut8PyQWeiYyZrBde9BRaQ85WYz/b6kCFhPKLn6sai+XemiardIK6K38ir4Y/lRwMI3o/5BMUlWMoVIa/+xXZ1Orn2GplWfpWioTeuuTKbhxfvTjqI4IfleaMNJP/R3tZDvo12+K4xEuX26q1zctT8xZlASbqoS8X7HfQrrMFsNdBYOiNxdLtJDH62/kTrkLi8eilLxyRUQxwL6ijqpJg3uP9EKgkmCVYTzIJ6Lhv1hamGQrWqHacWaQPDSU8kUPhXrw9Q3hpF2prc4g9axFfc13bjgTs7fxwmHSW68ZQjsnhwSviPO3z42Ve1LZF6m5yrvwUxbvPhKDmFE2ECg03lD46AmSTzqG+hkVeoelfA=
