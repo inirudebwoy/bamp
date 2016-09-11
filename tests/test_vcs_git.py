@@ -55,6 +55,7 @@ def git_repo():
     repo = porcelain.init(path)
     config = repo.get_config()
     config.set('user', 'name', 'Mr. Git')
+    config.write_to_path()
     return repo
 
 
