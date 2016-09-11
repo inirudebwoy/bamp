@@ -54,8 +54,8 @@ def git_repo():
     path = mkdtemp()
     repo = porcelain.init(path)
     config = repo.get_config()
-    config.set('user', 'name', 'Mr. Git')
-    config.set('user', 'email', 'mr.git@dulwich.co.uk')
+    config.set(b'user', b'name', b'Mr. Git')
+    config.set(b'user', b'email', b'mr.git@dulwich.co.uk')
     config.write_to_path()
     return repo
 
