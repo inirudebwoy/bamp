@@ -1,5 +1,6 @@
 Bamp
 =====
+[![Build Status](https://travis-ci.org/inirudebwoy/bamp.svg?branch=master)](https://travis-ci.org/inirudebwoy/bamp)
 **Pronounciation**
 
 - [**IPA**](https://en.wiktionary.org/wiki/Wiktionary:International_Phonetic_Alphabet): /bæmp/
