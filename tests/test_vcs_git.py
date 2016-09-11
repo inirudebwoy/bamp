@@ -1,11 +1,12 @@
+# -*- coding: utf-8 -*-
 import os
-from tempfile import mkstemp
+from tempfile import mkstemp, mkdtemp
 
 import pytest
 from dulwich import porcelain
 
 from bamp.exc import VCSException
-from bamp.vcs.git import is_tree_clean, get_repo
+from bamp.vcs.git import is_tree_clean, get_repo, create_commit
 
 
 class RepoStatusMock(object):
@@ -46,3 +47,17 @@ def test_get_repo_raise_exception():
 
     # cleanup
     os.remove(path)
+
+
+def test_create_commit_with_unicode_message():
+    path = mkdtemp()
+    repo = porcelain.init(path)
+    commit_sha1 = create_commit(repo, '', u'bździągwą')
+    assert commit_sha1
+
+
+def test_create_commit_with_message():
+    path = mkdtemp()
+    repo = porcelain.init(path)
+    commit_sha1 = create_commit(repo, '', 'a')
+    assert commit_sha1
