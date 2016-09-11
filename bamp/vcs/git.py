@@ -54,4 +54,4 @@ def create_commit(repo, files, message):
     """
     for f in files:
         porcelain.add(repo, f)
-    porcelain.commit(repo, message)
+    return porcelain.commit(repo, message.encode('utf-8'))
