@@ -49,15 +49,20 @@ def test_get_repo_raise_exception():
     os.remove(path)
 
 
-def test_create_commit_with_unicode_message():
+@pytest.fixture
+def git_repo():
     path = mkdtemp()
     repo = porcelain.init(path)
-    commit_sha1 = create_commit(repo, '', u'bździągwą')
+    config = repo.get_config()
+    config.set('user', 'name', 'Mr. Git')
+    return repo
+
+
+def test_create_commit_with_unicode_message(git_repo):
+    commit_sha1 = create_commit(git_repo, '', u'bździągwą')
     assert commit_sha1
 
 
-def test_create_commit_with_message():
-    path = mkdtemp()
-    repo = porcelain.init(path)
-    commit_sha1 = create_commit(repo, '', 'a')
+def test_create_commit_with_message(git_repo):
+    commit_sha1 = create_commit(git_repo, '', 'a')
     assert commit_sha1
