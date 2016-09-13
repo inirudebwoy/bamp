@@ -12,3 +12,11 @@ def test_get_vcs_module_git():
 def test_get_vcs_module_failed():
     with pytest.raises(MissingVcsModule):
         _get_vcs_module('Albatros')
+
+
+def test_make_tag_name():
+    assert False
+
+
+def test_create_tag():
+    assert False

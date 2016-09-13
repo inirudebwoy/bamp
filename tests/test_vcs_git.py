@@ -36,8 +36,10 @@ def test_is_tree_clean_with_staged_no_unstaged(monkeypatch):
 
 def test_is_tree_clean_with_staged_with_unstaged(monkeypatch):
     monkeypatch.setattr(porcelain, 'status', status_mockreturn)
-    assert not is_tree_clean({'staged': {'file': 'path'},
-                              'unstaged': ['moar files']})
+    assert not is_tree_clean({
+        'staged': {'file': 'path'},
+        'unstaged': ['moar files']
+    })
 
 
 def test_get_repo_raise_exception():
@@ -68,3 +70,7 @@ def test_create_commit_with_unicode_message(git_repo):
 def test_create_commit_with_message(git_repo):
     commit_sha1 = create_commit(git_repo, '', 'a')
     assert commit_sha1
+
+
+def test_create_tag_with_default_name():
+    assert False

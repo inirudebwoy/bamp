@@ -66,6 +66,7 @@ Example `bamp.cfg` config file.
     commit=True
     message=Bamp version: {current_version} -> {new_version}
     allow_dirty=False
+    tag={new_version}
 
 All the options can be passed as arguments to `bamp` executable. If one would like
 to bamp minor part in a file with custom message would do it like this.
@@ -99,6 +100,16 @@ message | -m/--message
 Commit message to be used when bamping.
 
     message=Bamp version: {current\_version} -> {new\_version}
+
+Following variables will be substituted:
+* current_version - for the version before bamping
+* new_version - for the version after bamping
+
+tag | -t/--tag
+-----------------
+Tag to be used when bamping.
+
+    tag={new\_version}
 
 Following variables will be substituted:
 * current_version - for the version before bamping
