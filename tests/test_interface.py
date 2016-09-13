@@ -87,3 +87,20 @@ def test_default_tag_default_commit_with_vcs():
         )
         assert result.output == 1
         assert result.exit_code == 0
+
+
+def test_custom_tag_default_commit_with_vcs():
+    """bamp patch -v 0.0.1 -f version.ini -c -t tag-{new_version}"""
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        porcelain.init('.')  # create git repo
+        with open('version.ini', 'w') as v:
+            v.write('0.0.1')
+        result = runner.invoke(
+            bamp, [
+                'patch', '-v', '0.0.1', '-f', 'version.ini', '-c', '-t',
+                'tag-{new_version}'
+            ]
+        )
+        assert result.output == 1
+        assert result.exit_code == 0
