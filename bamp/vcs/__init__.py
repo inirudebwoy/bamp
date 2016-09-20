@@ -24,9 +24,8 @@ def _get_vcs_module(vcs_type):
 
     """
     try:
-        vcs_module = importlib.import_module(
-            '{0}.{1}'.format(__name__, vcs_type)
-        )
+        vcs_module = importlib.import_module('{0}.{1}'.format(__name__,
+                                                              vcs_type))
     except ImportError:
         logger.exception('Unable to find module supporting "%s".', vcs_type)
         raise MissingVcsModule()
@@ -56,10 +55,9 @@ def create_commit(vcs_type, files, message):
     try:
         return vcs.create_commit(repo, files, message)
     except:
-        logger.exception(
-            'Could not create a commit message "%s" '
-            'for the repo "%s" under path "%s"', message, vcs_type, root_path
-        )
+        logger.exception('Could not create a commit message "%s" '
+                         'for the repo "%s" under path "%s"', message,
+                         vcs_type, root_path)
         error_exit('Could not create a commit message.')
 
 
@@ -73,12 +71,12 @@ def create_tag(vcs_type, commit_sha1, tag_name):
         error_exit(e.args)
     # this bit
 
-    vcs.create_tag(repo, commit_sha1, tag_name)
-    return
+    return vcs.create_tag(repo, commit_sha1, tag_name)
 
 
-def make_tag_name():
-    return
+def make_tag_name(tag_message, new_version):
+    """ TODO"""
+    return tag_message.format(new_version=new_version)
 
 
 @verify_response
@@ -117,5 +115,4 @@ def make_message(message, current_version, new_version):
     :rtype: str
     """
     return message.format(
-        current_version=current_version, new_version=new_version
-    )
+        current_version=current_version, new_version=new_version)

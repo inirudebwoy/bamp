@@ -35,9 +35,8 @@ def test_arg_part_with_version_with_nonexisting_file():
     """bamp patch -v 0.0.1 -f version.ini"""
     runner = CliRunner()
     with runner.isolated_filesystem():
-        result = runner.invoke(
-            bamp, ['patch', '-v', '0.0.1', '-f', 'version.ini']
-        )
+        result = runner.invoke(bamp,
+                               ['patch', '-v', '0.0.1', '-f', 'version.ini'])
         assert result.exit_code == 2
         assert '"version.ini" does not exist' in result.output
 
@@ -48,9 +47,8 @@ def test_arg_part_with_version_with_existing_file():
     with runner.isolated_filesystem():
         with open('version.ini', 'w') as v:
             v.write('0.0.1')
-        result = runner.invoke(
-            bamp, ['patch', '-v', '0.0.1', '-f', 'version.ini']
-        )
+        result = runner.invoke(bamp,
+                               ['patch', '-v', '0.0.1', '-f', 'version.ini'])
         assert result.exit_code == 0
 
 
@@ -70,8 +68,7 @@ def test_with_default_commit_no_vcs():
         with open('version.ini', 'w') as v:
             v.write('0.0.1')
         result = runner.invoke(
-            bamp, ['patch', '-v', '0.0.1', '-f', 'version.ini', '-c']
-        )
+            bamp, ['patch', '-v', '0.0.1', '-f', 'version.ini', '-c'])
         assert result.exit_code == 1
 
 
@@ -83,24 +80,21 @@ def test_default_tag_default_commit_with_vcs():
         with open('version.ini', 'w') as v:
             v.write('0.0.1')
         result = runner.invoke(
-            bamp, ['patch', '-v', '0.0.1', '-f', 'version.ini', '-c', '-t']
-        )
+            bamp, ['patch', '-v', '0.0.1', '-f', 'version.ini', '-c', '-t'])
         assert result.output == 1
         assert result.exit_code == 0
 
 
 def test_custom_tag_default_commit_with_vcs():
-    """bamp patch -v 0.0.1 -f version.ini -c -t tag-{new_version}"""
+    """bamp patch -v 0.0.1 -f version.ini -c -t -T tag-{new_version}"""
     runner = CliRunner()
     with runner.isolated_filesystem():
         porcelain.init('.')  # create git repo
         with open('version.ini', 'w') as v:
             v.write('0.0.1')
-        result = runner.invoke(
-            bamp, [
-                'patch', '-v', '0.0.1', '-f', 'version.ini', '-c', '-t',
-                'tag-{new_version}'
-            ]
-        )
+        result = runner.invoke(bamp, [
+            'patch', '-v', '0.0.1', '-f', 'version.ini', '-c', '-t', '-T',
+            'tag-{new_version}'
+        ])
         assert result.output == 1
         assert result.exit_code == 0

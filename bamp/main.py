@@ -12,9 +12,8 @@ import click
 from bamp.engine import bamp_version
 from bamp.persistence import bamp_files
 from bamp.helpers.callbacks import enable_debug, read_config, required
-from bamp.vcs import (
-    create_commit, is_tree_clean, make_message, create_tag, make_tag_name
-)
+from bamp.vcs import (create_commit, is_tree_clean, make_message, create_tag,
+                      make_tag_name)
 from bamp.helpers.ui import verify_response, ok_exit
 from bamp.helpers import docs
 from bamp.config import add_config, get_root_path
@@ -31,19 +30,15 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
     is_flag=True,
     expose_value=False,
     callback=enable_debug,
-    is_eager=True
-)
+    is_eager=True)
 @click.option(
     '--config',
     type=click.Path(
-        exists=True, dir_okay=False
-    ),
+        exists=True, dir_okay=False),
     help=docs.CONFIG_OPTION_HELP,
-    callback=read_config
-)
+    callback=read_config)
 @click.option(
-    '-v', '--version', help=docs.VERSION_OPTION_HELP, callback=required
-)
+    '-v', '--version', help=docs.VERSION_OPTION_HELP, callback=required)
 @click.option(
     'files',
     '-f',
@@ -51,24 +46,29 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
     help=docs.FILES_OPTION_HELP,
     type=click.Path(exists=True),
     multiple=True,
-    callback=required
-)
+    callback=required)
 @click.option('vcs', '-V', '--vcs', help=docs.VCS_OPTION_HELP)
 @click.option('allow_dirty', '-a', '--allow-dirty', is_flag=True)
-@click.option('commit', '-c', '--commit', is_flag=True)
+@click.option(
+    'commit',
+    '-c',
+    '--commit',
+    is_flag=True,
+    help=docs.COMMIT_FLAG_OPTION_HELP)
 @click.option('message', '-m', '--message', help=docs.MESSAGE_OPTION_HELP)
 @click.option(
-    'tag',
-    '-t',
-    '--tag',
-    help=docs.TAG_OPTION_HELP,
-    metavar=docs.TAG_OPTION_METAVAR
-)
+    'tag', '-t', '--tag', is_flag=True, help=docs.TAG_FLAG_OPTION_HELP)
+@click.option(
+    'tag_name',
+    '-T',
+    '--tag-name',
+    help=docs.TAG_NAME_OPTION_HELP,
+    metavar=docs.TAG_NAME_OPTION_METAVAR)
 @click.argument(
-    'part', nargs=1, type=click.Choice(['patch', 'minor', 'major'])
-)
+    'part', nargs=1, type=click.Choice(['patch', 'minor', 'major']))
 @add_config
-def bamp(version, part, files, vcs, allow_dirty, commit, message, config, tag):
+def bamp(version, part, files, vcs, allow_dirty, commit, message, config, tag,
+         tag_name):
     root_path = get_root_path()
     sanity_checks(root_path)
 
@@ -79,8 +79,8 @@ def bamp(version, part, files, vcs, allow_dirty, commit, message, config, tag):
         commit_message = make_message(message, version, new_version)
         commit_sha1 = create_commit(vcs, files, commit_message)
     if tag and commit_sha1:
-        tag_name = make_tag_name()
-        create_tag(vcs, commit_sha1, tag_name)
+        tag_message = make_tag_name(tag_name, new_version)
+        create_tag(vcs, commit_sha1, tag_message)
 
     ok_exit('New version: {0}'.format(new_version))
 

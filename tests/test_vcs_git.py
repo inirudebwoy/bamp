@@ -6,7 +6,7 @@ import pytest
 from dulwich import porcelain
 
 from bamp.exc import VCSException
-from bamp.vcs.git import is_tree_clean, get_repo, create_commit
+from bamp.vcs.git import is_tree_clean, get_repo, create_commit, create_tag
 
 
 class RepoStatusMock(object):
@@ -72,5 +72,7 @@ def test_create_commit_with_message(git_repo):
     assert commit_sha1
 
 
-def test_create_tag_with_default_name():
-    assert False
+def test_create_tag_with_custom_name(git_repo):
+    commit_sha1 = create_commit(git_repo, '', 'Tag this commit')
+    tag = create_tag(git_repo, commit_sha1, 'tag-commit')
+    assert tag
