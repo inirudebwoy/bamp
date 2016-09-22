@@ -13,7 +13,8 @@ DEFAULT_CONFIG = {
     'vcs': 'git',
     'commit': False,
     'message': 'Bamp version: {current_version} -> {new_version}',
-    'tag': '{new_version}',
+    'tag_name': '{new_version}',
+    'tag': False,
     'files': [],
     'allow_dirty': False
 }

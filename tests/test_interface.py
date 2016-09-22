@@ -49,6 +49,7 @@ def test_arg_part_with_version_with_existing_file():
             v.write('0.0.1')
         result = runner.invoke(bamp,
                                ['patch', '-v', '0.0.1', '-f', 'version.ini'])
+
         assert result.exit_code == 0
 
 
@@ -81,7 +82,6 @@ def test_default_tag_default_commit_with_vcs():
             v.write('0.0.1')
         result = runner.invoke(
             bamp, ['patch', '-v', '0.0.1', '-f', 'version.ini', '-c', '-t'])
-        assert result.output == 1
         assert result.exit_code == 0
 
 
@@ -96,5 +96,4 @@ def test_custom_tag_default_commit_with_vcs():
             'patch', '-v', '0.0.1', '-f', 'version.ini', '-c', '-t', '-T',
             'tag-{new_version}'
         ])
-        assert result.output == 1
         assert result.exit_code == 0

@@ -58,6 +58,5 @@ def create_commit(repo, files, message):
 
 
 def create_tag(repo, commit_sha1, tag_name):
-
-    # repo.refs['refs/tags/{0}'.format(tag_name)] = commit_sha1
-    return
+    repo.refs['refs/tags/{0}'.format(tag_name)] = commit_sha1
+    return repo.refs['refs/tags/{0}'.format(tag_name)]
