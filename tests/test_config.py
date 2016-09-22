@@ -1,8 +1,8 @@
 import pytest
 
 import bamp
-from bamp.config import (
-    DEFAULT_CONFIG, make_default_map, get_config_module, prepare_config)
+from bamp.config import (DEFAULT_CONFIG, make_default_map, get_config_module,
+                         prepare_config)
 from bamp.exc import MissingConfigParser, ErrorConfigParsing
 
 
@@ -23,6 +23,7 @@ def test_override_all_values():
     config = {'bamp': {'vcs': 'other',
                        'commit': True,
                        'message': 'Larch',
+                       'tag_name': 'Spam',
                        'tag': True,
                        'files': 'yes',
                        'allow_dirty': True}}
@@ -58,6 +59,7 @@ def test_prepare_config_parsing_error(monkeypatch):
     def mockreturn(filename):
         def raiser(filename):
             raise ErrorConfigParsing
+
         return ConfigMock(raiser)
 
     monkeypatch.setattr(bamp.config, 'get_config_module', mockreturn)

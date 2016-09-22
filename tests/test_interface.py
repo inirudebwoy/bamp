@@ -1,4 +1,5 @@
 from click.testing import CliRunner
+from dulwich import porcelain
 
 from bamp.main import bamp
 
@@ -48,10 +49,12 @@ def test_arg_part_with_version_with_existing_file():
             v.write('0.0.1')
         result = runner.invoke(bamp,
                                ['patch', '-v', '0.0.1', '-f', 'version.ini'])
+
         assert result.exit_code == 0
 
 
 def test_arg_unsupported_part():
+    """bamp foobar"""
     runner = CliRunner()
     with runner.isolated_filesystem():
         result = runner.invoke(bamp, ['foobar'])
@@ -59,11 +62,38 @@ def test_arg_unsupported_part():
         assert 'Invalid value for "part"' in result.output
 
 
-def test_with_commit_no_vcs():
+def test_with_default_commit_no_vcs():
+    """bamp patch -v 0.0.1 -f version.ini -c"""
     runner = CliRunner()
     with runner.isolated_filesystem():
         with open('version.ini', 'w') as v:
             v.write('0.0.1')
-        result = runner.invoke(bamp, ['patch', '-v', '0.0.1', '-f', 'version.ini',
-                                      '-c'])
+        result = runner.invoke(
+            bamp, ['patch', '-v', '0.0.1', '-f', 'version.ini', '-c'])
         assert result.exit_code == 1
+
+
+def test_default_tag_default_commit_with_vcs():
+    """bamp patch -v 0.0.1 -f version.ini -ct"""
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        porcelain.init('.')  # create git repo
+        with open('version.ini', 'w') as v:
+            v.write('0.0.1')
+        result = runner.invoke(
+            bamp, ['patch', '-v', '0.0.1', '-f', 'version.ini', '-c', '-t'])
+        assert result.exit_code == 0
+
+
+def test_custom_tag_default_commit_with_vcs():
+    """bamp patch -v 0.0.1 -f version.ini -c -t -T tag-{new_version}"""
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        porcelain.init('.')  # create git repo
+        with open('version.ini', 'w') as v:
+            v.write('0.0.1')
+        result = runner.invoke(bamp, [
+            'patch', '-v', '0.0.1', '-f', 'version.ini', '-c', '-t', '-T',
+            'tag-{new_version}'
+        ])
+        assert result.exit_code == 0

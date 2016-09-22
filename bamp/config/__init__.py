@@ -13,6 +13,7 @@ DEFAULT_CONFIG = {
     'vcs': 'git',
     'commit': False,
     'message': 'Bamp version: {current_version} -> {new_version}',
+    'tag_name': '{new_version}',
     'tag': False,
     'files': [],
     'allow_dirty': False
@@ -27,6 +28,7 @@ def add_config(func):
     if it exists of course.
 
     """
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         conf = find_config()
@@ -34,6 +36,7 @@ def add_config(func):
         if files and conf and conf not in files:
             kwargs['files'] += (conf, )
         return func(*args, **kwargs)
+
     return wrapper
 
 
@@ -100,7 +103,7 @@ def get_config_module(filename):
     :raises: MissingConfigParser
 
     """
-    root, ext = os.path.splitext(filename)
+    _, ext = os.path.splitext(filename)
     if ext == '.cfg':  # this really is INI
         ext = '.ini'  # would some mapping be better?
     try:
@@ -134,6 +137,7 @@ def prepare_config(filename):
 
 
 def get_root_path():
+    """TODO"""
     conf = find_config()
     root_path = os.path.abspath(os.path.curdir)
     if conf:

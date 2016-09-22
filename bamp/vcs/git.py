@@ -55,3 +55,8 @@ def create_commit(repo, files, message):
     for f in files:
         porcelain.add(repo, f)
     return porcelain.commit(repo, message.encode('utf-8'))
+
+
+def create_tag(repo, commit_sha1, tag_name):
+    repo.refs['refs/tags/{0}'.format(tag_name)] = commit_sha1
+    return repo.refs['refs/tags/{0}'.format(tag_name)]
