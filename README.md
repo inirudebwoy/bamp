@@ -66,7 +66,8 @@ Example `bamp.cfg` config file.
     commit=True
     message=Bamp version: {current_version} -> {new_version}
     allow_dirty=False
-    tag={new_version}
+    tag=True
+    tag_name={new_version}
 
 All the options can be passed as arguments to `bamp` executable. If one would like
 to bamp minor part in a file with custom message would do it like this.
@@ -105,11 +106,18 @@ Following variables will be substituted:
 * current_version - for the version before bamping
 * new_version - for the version after bamping
 
-tag | -t/--tag
------------------
-Tag to be used when bamping.
+tag | -t/-tag
+----------------
+Flag for creating a tag. If set to true bamp will use a default tag message or
+use one provided via `-T/--tag-name` argument or taken from the config file.
 
-    tag={new\_version}
+    tag=True
+
+tag_name | -T/--tag-name
+-----------------
+Tag name to be used when bamping.
+
+    tag_name={new\_version}
 
 Following variables will be substituted:
 * current_version - for the version before bamping
