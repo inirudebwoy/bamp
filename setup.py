@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='bamp',
-    version='0.1.1',
+    version='0.1.2',
     install_requires=['Click'],
     entry_points='''
       [console_scripts]
