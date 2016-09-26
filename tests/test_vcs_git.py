@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from tempfile import mkstemp, mkdtemp
+from tempfile import mkstemp
 
 import pytest
 from dulwich import porcelain
@@ -49,17 +49,6 @@ def test_get_repo_raise_exception():
 
     # cleanup
     os.remove(path)
-
-
-@pytest.fixture
-def git_repo():
-    path = mkdtemp()
-    repo = porcelain.init(path)
-    config = repo.get_config()
-    config.set(b'user', b'name', b'Mr. Git')
-    config.set(b'user', b'email', b'mr.git@dulwich.co.uk')
-    config.write_to_path()
-    return repo
 
 
 def test_create_commit_with_unicode_message(git_repo):

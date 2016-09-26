@@ -1,7 +1,7 @@
 from click.testing import CliRunner
-from dulwich import porcelain
 
 from bamp.main import bamp
+from .conftest import git_repo
 
 
 def test_arg_part_missing():
@@ -77,7 +77,7 @@ def test_default_tag_default_commit_with_vcs():
     """bamp patch -v 0.0.1 -f version.ini -ct"""
     runner = CliRunner()
     with runner.isolated_filesystem():
-        porcelain.init('.')  # create git repo
+        git_repo('.')
         with open('version.ini', 'w') as v:
             v.write('0.0.1')
         result = runner.invoke(
@@ -89,7 +89,7 @@ def test_custom_tag_default_commit_with_vcs():
     """bamp patch -v 0.0.1 -f version.ini -c -t -T tag-{new_version}"""
     runner = CliRunner()
     with runner.isolated_filesystem():
-        porcelain.init('.')  # create git repo
+        git_repo('.')
         with open('version.ini', 'w') as v:
             v.write('0.0.1')
         result = runner.invoke(bamp, [

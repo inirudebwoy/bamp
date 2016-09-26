@@ -3,6 +3,8 @@ Module supporting Git vcs
 
 """
 import logging
+
+import six
 from dulwich import porcelain
 from dulwich.repo import NotGitRepository
 
@@ -58,5 +60,6 @@ def create_commit(repo, files, message):
 
 
 def create_tag(repo, commit_sha1, tag_name):
-    repo.refs['refs/tags/{0}'.format(tag_name)] = commit_sha1
-    return repo.refs['refs/tags/{0}'.format(tag_name)]
+    tag_ref = 'refs/tags/{0}'.format(tag_name)
+    repo.refs[six.b(tag_ref)] = commit_sha1
+    return repo.refs[six.b(tag_ref)]
