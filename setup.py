@@ -3,8 +3,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='bamp',
-    version='0.1.1',
-    install_requires=['Click'],
+    version='0.1.3',
+    install_requires=['Click', 'dulwich', 'six'],
     entry_points='''
       [console_scripts]
       bamp=bamp.main:bamp

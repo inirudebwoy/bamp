@@ -15,6 +15,6 @@ VCS_OPTION_HELP = 'Specify VCS to use.'
 MESSAGE_OPTION_HELP = 'Commit message to use.'
 COMMIT_FLAG_OPTION_HELP = (
     'Toggle for creating a commit. If passed commit '
-    'will be created. --message/-m specifies what is the commit messag.')
+    'will be created. --message/-m specifies what is the commit message.')
 CONFIG_OPTION_HELP = 'Path to a config file.'
 DEBUG_OPTION_HELP = 'Enable debug flag.'
