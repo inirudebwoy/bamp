@@ -26,8 +26,9 @@ def load_config(filepath):
 
 def config_dump(config):
     """Convert configparser object into a dictionary.
-    Multiline values are converted into lists, they are sliced
-    on '\n' char.
+    'files' key in the config object can be have a multiline value. It is
+    converted into a tuple by slicing on the '\n' char. Single line 'files'
+    value is converted into single element tuple.
 
     :param config: config to convert
     :type config: ConfigParser
@@ -39,8 +40,10 @@ def config_dump(config):
     for section in config.sections():
         dict_item = {}
         for key_item, value_item in config.items(section):
-            if '\n' in value_item:  # multiline
+            if key_item == 'files' and '\n' in value_item:  # multiline
                 value_item = tuple(value_item.split())
+            elif key_item == 'files':
+                value_item = (value_item, )
             dict_item[key_item] = value_item
         dict_config[section] = dict_item
     return dict_config
