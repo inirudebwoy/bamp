@@ -3,9 +3,9 @@ Module supporting INI type config files.
 
 """
 import logging
-from six.moves import configparser
 
 from bamp.exc import ErrorConfigParsing
+from six.moves import configparser
 
 logger = logging.getLogger(__name__)
 

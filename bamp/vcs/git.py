@@ -5,10 +5,10 @@ Module supporting Git vcs
 import logging
 
 import six
-from dulwich import porcelain
-from dulwich.repo import NotGitRepository
 
 from bamp.exc import VCSException
+from dulwich import porcelain
+from dulwich.repo import NotGitRepository
 
 logger = logging.getLogger(__name__)
 

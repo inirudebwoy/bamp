@@ -9,14 +9,14 @@ import logging.config
 
 import click
 
-from bamp.engine import bamp_version
-from bamp.persistence import bamp_files
-from bamp.helpers.callbacks import enable_debug, read_config, required
-from bamp.vcs import (create_commit, is_tree_clean, make_message, create_tag,
-                      make_tag_name)
-from bamp.helpers.ui import verify_response, ok_exit
-from bamp.helpers import docs
 from bamp.config import add_config, get_root_path
+from bamp.engine import bamp_version
+from bamp.helpers import docs
+from bamp.helpers.callbacks import enable_debug, read_config, required
+from bamp.helpers.ui import ok_exit, verify_response
+from bamp.persistence import bamp_files
+from bamp.vcs import (create_commit, create_tag, is_tree_clean, make_message,
+                      make_tag_name)
 
 logger = logging.getLogger('bamp')
 

@@ -3,14 +3,14 @@ Module providing support for pluggable VCS support
 
 """
 
-import logging
 import importlib
+import logging
 
 import click
 
-from bamp.exc import MissingVcsModule, VCSException
-from bamp.helpers.ui import verify_response, error_exit
 from bamp.config import get_root_path
+from bamp.exc import MissingVcsModule, VCSException
+from bamp.helpers.ui import error_exit, verify_response
 
 logger = logging.getLogger(__name__)
 

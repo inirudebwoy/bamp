@@ -1,11 +1,11 @@
+import importlib
 import logging
 import os.path
-import importlib
 from functools import wraps
 
 import click
 
-from bamp.exc import MissingConfigParser, ErrorConfigParsing
+from bamp.exc import ErrorConfigParsing, MissingConfigParser
 
 logger = logging.getLogger(__name__)
 
