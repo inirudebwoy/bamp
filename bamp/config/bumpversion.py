@@ -1,7 +1,3 @@
-"""
-Module supporting INI type config files.
-
-"""
 import logging
 
 from bamp.exc import ErrorConfigParsing
@@ -25,27 +21,35 @@ def load_config(filepath):
 
 
 def config_dump(config):
-    """Convert configparser object into a dictionary.
-    'files' key in the config object can be have a multiline value. It is
-    converted into a tuple by slicing on the '\n' char. Single line 'files'
-    value is converted into single element tuple.
+    """
 
-    :param config: config to convert
-    :type config: ConfigParser
-    :returns: config in form of dictionary
-    :rtype: dict
+    Bumpversion supports file or part specific config. It is achieved by
+    formatting name of the section in certain way.
+
+    [bumpversion:file:./path.py]
+
+    Function at this point supports only parsing the paths in file specific
+    section and appends them to bamp config file section.
+    Other configuration included in specific section is not supported yet.
 
     """
     dict_config = {}
-    bamp_sections = [s for s in config.sections() if 'bamp' in s]
-    for section in bamp_sections:
+    bumpversion_sections = [s for s in config.sections()
+                            if 'bumpversion' in s]
+
+    for section in bumpversion_sections():
         dict_item = {}
+        # identify if it's a files section
+        # extract filepath
+        # create files section
+        # add filepath to files section
+        try:
+            _, main, sub = section.split(':')
+        except ValueError:
+            key_item = 'files'
+            value_item = sub
+
         for key_item, value_item in config.items(section):
-            # transforming files variable into tuple
-            if key_item == 'files' and '\n' in value_item:  # multiline
-                value_item = tuple(value_item.split())
-            elif key_item == 'files':
-                value_item = (value_item, )
             dict_item[key_item] = value_item
         dict_config[section] = dict_item
     return dict_config
