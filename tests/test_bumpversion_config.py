@@ -37,3 +37,8 @@ def test_two_file_sections():
     assert {
         'files': ('./file_one.php', './file_two.php')
     } == config_dump(config)
+
+
+def test_current_version_renamed():
+    config = make_config('[bumpversion]\n' 'current_version = 1.0.42')
+    assert {'version': '1.0.42'} == config_dump(config)
