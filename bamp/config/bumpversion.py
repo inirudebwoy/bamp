@@ -1,7 +1,3 @@
-"""
-Module supporting INI type config files.
-
-"""
 import logging
 
 from bamp.exc import ErrorConfigParsing
@@ -25,27 +21,33 @@ def load_config(filepath):
 
 
 def config_dump(config):
-    """Convert configparser object into a dictionary.
-    'files' key in the config object can be have a multiline value. It is
-    converted into a tuple by slicing on the '\n' char. Single line 'files'
-    value is converted into single element tuple.
+    """Bumpversion supports file or part specific config. It is achieved by
+    formatting name of the section in certain way.
 
-    :param config: config to convert
-    :type config: ConfigParser
-    :returns: config in form of dictionary
-    :rtype: dict
+    [bumpversion:file:./path.py]
+
+    Function at this point supports only parsing the paths in file specific
+    section and appends them to bamp config file section.
+    Other configuration included in specific section is not supported yet.
 
     """
     dict_config = {}
-    bamp_sections = [s for s in config.sections() if 'bamp' in s]
-    for section in bamp_sections:
-        for key_item, value_item in config.items(section):
-            # transforming files variable into tuple
-            if key_item == 'files' and '\n' in value_item:  # multiline
-                value_item = tuple(value_item.split())
-            elif key_item == 'files':
-                value_item = (value_item, )
-            dict_config[key_item] = value_item
+    bumpversion_sections = [s for s in config.sections() if 'bumpversion' in s]
+
+    for section in bumpversion_sections:
+        if ':' not in section:
+            for key_item, value_item in config.items(section):
+
+                # bumpversion uses current_version instead of version
+                if key_item == 'current_version':
+                    key_item = 'version'
+
+                dict_config[key_item] = value_item
+        else:
+            sub = section.split(':')[2]
+            files = dict_config.get('files', ())
+            dict_config['files'] = files + (sub, )
+
     return dict_config
 
 

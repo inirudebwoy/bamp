@@ -1,9 +1,9 @@
 import logging
 import os
-from shutil import copy2
-from io import open
-from tempfile import mkstemp
 from collections import namedtuple
+from io import open
+from shutil import copy2
+from tempfile import mkstemp
 
 from bamp.exc import VersionNotFound
 from bamp.helpers.ui import verify_response

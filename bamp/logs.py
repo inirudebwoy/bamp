@@ -10,6 +10,7 @@ class DebugFilter(logging.Filter):
             return True
         return False
 
+
 LOGGING = {
     'version': 1,
     'filters': {
