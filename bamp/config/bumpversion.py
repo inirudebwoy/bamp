@@ -21,9 +21,7 @@ def load_config(filepath):
 
 
 def config_dump(config):
-    """
-
-    Bumpversion supports file or part specific config. It is achieved by
+    """Bumpversion supports file or part specific config. It is achieved by
     formatting name of the section in certain way.
 
     [bumpversion:file:./path.py]
@@ -37,21 +35,16 @@ def config_dump(config):
     bumpversion_sections = [s for s in config.sections()
                             if 'bumpversion' in s]
 
-    for section in bumpversion_sections():
-        dict_item = {}
-        # identify if it's a files section
-        # extract filepath
-        # create files section
-        # add filepath to files section
-        try:
-            _, main, sub = section.split(':')
-        except ValueError:
-            key_item = 'files'
-            value_item = sub
+    for section in bumpversion_sections:
 
-        for key_item, value_item in config.items(section):
-            dict_item[key_item] = value_item
-        dict_config[section] = dict_item
+        if ':' not in section:
+            for key_item, value_item in config.items(section):
+                dict_config[key_item] = value_item
+        else:
+            sub = section.split(':')[2]
+            files = dict_config.get('files', ())
+            dict_config['files'] = files + (sub, )
+
     return dict_config
 
 

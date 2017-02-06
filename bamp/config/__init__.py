@@ -71,9 +71,8 @@ def make_default_map(config):
 
     """
     # TODO: convert 'bools' into bools
-    cfg_dict = config.get('bamp', {})
     def_copy = DEFAULT_CONFIG.copy()
-    def_copy.update(cfg_dict)
+    def_copy.update(config)
     return def_copy
 
 

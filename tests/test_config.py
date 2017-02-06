@@ -10,26 +10,24 @@ def test_empty_config():
     assert make_default_map({}) == DEFAULT_CONFIG
 
 
-def test_empty_bamp_section():
-    assert make_default_map({'bamp': {}}) == DEFAULT_CONFIG
-
-
 def test_override_default_value():
-    def_map = make_default_map({'bamp': {'tag': True}})
+    def_map = make_default_map({'tag': True})
     assert def_map.get('tag')
 
 
 def test_override_all_values():
-    config = {'bamp': {'vcs': 'other',
-                       'commit': True,
-                       'message': 'Larch',
-                       'tag_name': 'Spam',
-                       'tag': True,
-                       'files': 'yes',
-                       'allow_dirty': True}}
+    config = {
+        'vcs': 'other',
+        'commit': True,
+        'message': 'Larch',
+        'tag_name': 'Spam',
+        'tag': True,
+        'files': 'yes',
+        'allow_dirty': True
+    }
     def_map = make_default_map(config)
     for k in def_map:
-        assert def_map.get(k) == config.get('bamp').get(k)
+        assert def_map.get(k) == config.get(k)
 
 
 def test_get_config_module_cfg_ext():

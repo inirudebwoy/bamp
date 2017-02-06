@@ -39,15 +39,13 @@ def config_dump(config):
     dict_config = {}
     bamp_sections = [s for s in config.sections() if 'bamp' in s]
     for section in bamp_sections:
-        dict_item = {}
         for key_item, value_item in config.items(section):
             # transforming files variable into tuple
             if key_item == 'files' and '\n' in value_item:  # multiline
                 value_item = tuple(value_item.split())
             elif key_item == 'files':
                 value_item = (value_item, )
-            dict_item[key_item] = value_item
-        dict_config[section] = dict_item
+            dict_config[key_item] = value_item
     return dict_config
 
 
