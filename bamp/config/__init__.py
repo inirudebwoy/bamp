@@ -76,22 +76,6 @@ def make_default_map(config):
     return def_copy
 
 
-def get_config(filename):
-    """Load config module base on the config file format
-
-    Loading of config module is based on extension of the file.
-    If there is no extension INI style is assumed.
-
-    :param filename: name of the config file
-    :type filename: str
-    :raises: MissingConfigParser
-    :returns: configuration loaded from file
-
-    """
-    conf_module = get_config_module(filename)
-    return conf_module.load_config(filename)
-
-
 def get_config_module(filename):
     """Retrieve module responsible for parsing specific config file format.
 
@@ -105,6 +89,14 @@ def get_config_module(filename):
     _, ext = os.path.splitext(filename)
     if ext == '.cfg':  # this really is INI
         ext = '.ini'  # would some mapping be better?
+
+    try:
+        with open(filename) as f:
+            if 'bumpversion' in f.read():
+                ext = '.bumpversion'
+    except IOError:
+        pass
+
     try:
         conf_module = importlib.import_module(__name__ + ext)
     except ImportError:

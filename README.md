@@ -12,10 +12,8 @@ Bamp
 
 What does it do?
 =====================
-Bamp saves you precious time by bamping version in all configured files, creating
-commit and tag (coming this fall) with one simple command.
-Bamp follows [SemVer](http://semver.org/) when bamping versions, bringing a bit of sanity into this
-world of dependencies.
+Bamp saves you precious time by bamping version in all configured files, creating commit and tag (coming this fall) with one simple command.
+Bamp follows [SemVer](http://semver.org/) when bamping versions, bringing a bit of sanity into the world of dependencies.
 
 Quick start
 ==============
@@ -73,6 +71,9 @@ All the options can be passed as arguments to `bamp` executable. If one would li
 to bamp minor part in a file with custom message would do it like this.
 
     bamp minor --version 2.15.10 --files setup.py --commit --message "Bamping!"
+
+As a bit of extra goodness it partially supports configuration used by [bumpversion]() software. Path files defined in *bumpversion* format will be honoured by *bamp* and updated accordingly. You may simply point *bamp* at the configuration file or let it seek for expected file names.
+
 
 allow_dirty | -a/--allow-dirty
 -------------------------------------
