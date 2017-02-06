@@ -1,11 +1,11 @@
-import sys
 import logging
+import sys
 
 import click
 
-from bamp.logs import LOGGING
+from bamp.config import find_config, make_default_map, prepare_config
 from bamp.exc import ErrorConfigParsing
-from bamp.config import find_config, prepare_config, make_default_map
+from bamp.logs import LOGGING
 
 logger = logging.getLogger(__name__)
 

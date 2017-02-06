@@ -2,25 +2,15 @@
 Module supporting Git vcs
 
 """
+import logging
 
+import six
+
+from bamp.exc import VCSException
 from dulwich import porcelain
 from dulwich.repo import NotGitRepository
 
-
-def repo_exists(repo_path):
-    """Check if repo exists
-
-    :param repo_path: path to the repo
-    :type repo_path: str
-    :returns: True if exists, False otherwise
-    :rtype: bool
-
-    """
-    try:
-        get_repo(repo_path)
-    except NotGitRepository:
-        return False
-    return True
+logger = logging.getLogger(__name__)
 
 
 def get_repo(repo_path):
@@ -32,7 +22,12 @@ def get_repo(repo_path):
     :rtype: dulwich.Repo
 
     """
-    return porcelain.open_repo(repo_path)
+    try:
+        return porcelain.open_repo(repo_path)
+    except NotGitRepository:
+        err_msg = 'Unable to open repository.'
+        logger.exception(err_msg)
+        raise VCSException(err_msg)
 
 
 def is_tree_clean(repo):
@@ -51,7 +46,7 @@ def is_tree_clean(repo):
 def create_commit(repo, files, message):
     """Create a commit
 
-    :param repo: git repository
+    :param repo: repository
     :type repo: dulwich.Repo
     :param files: list of files to be added to commit
     :type files: list
@@ -61,4 +56,10 @@ def create_commit(repo, files, message):
     """
     for f in files:
         porcelain.add(repo, f)
-    porcelain.commit(repo, message)
+    return porcelain.commit(repo, message.encode('utf-8'))
+
+
+def create_tag(repo, commit_sha1, tag_name):
+    tag_ref = 'refs/tags/{0}'.format(tag_name)
+    repo.refs[six.b(tag_ref)] = commit_sha1
+    return repo.refs[six.b(tag_ref)]

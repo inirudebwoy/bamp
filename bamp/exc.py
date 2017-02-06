@@ -16,3 +16,7 @@ class MissingVcsModule(Exception):
 
 class VersionNotFound(Exception):
     pass
+
+
+class VCSException(Exception):
+    pass
