@@ -2,7 +2,7 @@ import logging
 import os
 from collections import namedtuple
 from io import open
-from shutil import copy2
+from shutil import copy, copystat
 from tempfile import mkstemp
 
 from bamp.exc import VersionNotFound
@@ -47,7 +47,7 @@ def bamp_files(cur_version, new_version, files):
         return False, errors
 
     for orig, bamped in bamped_files:
-        copy2(bamped, orig)
+        copy(bamped, orig)
 
     # clear temps
     _rm_files([p.copy for p in bamped_files])
@@ -94,5 +94,6 @@ def _file_bamper(cur_version, new_version, file_path):
                 cf.write(line)
             if not found:
                 raise VersionNotFound()
+            copystat(file_path, copy_path)
 
     return PathPair(file_path, copy_path)
