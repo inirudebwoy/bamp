@@ -3,6 +3,7 @@ Module supporting Git vcs
 
 """
 import logging
+import os.path
 
 import six
 
@@ -55,7 +56,7 @@ def create_commit(repo, files, message):
 
     """
     for f in files:
-        porcelain.add(repo, f)
+        porcelain.add(repo, os.path.normpath(f))
     return porcelain.commit(repo, message.encode('utf-8'))
 
 
