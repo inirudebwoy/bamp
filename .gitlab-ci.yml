@@ -25,4 +25,4 @@ test-py27:
   stage: test-py27
   image: ${CONTAINER_IMAGE}:${CI_COMMIT_REF_NAME}
   script:
-    - /ve/bin/tox -c /ve/bamp -e py27
+    - /ve/bin/tox -c /src/bamp -e py27
