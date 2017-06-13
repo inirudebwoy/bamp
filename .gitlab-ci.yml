@@ -32,4 +32,4 @@ publish:
   image: ${CONTAINER_IMAGE}:${CI_COMMIT_REF_NAME}
   script:
     - /ve/bin/python /src/bamp/setup.py sdist bdist_wheel
-    - "/ve/bin/twine upload /src/bamp/dist/*"
+    - /ve/bin/twine upload '/src/bamp/dist/*'
