@@ -22,7 +22,7 @@ build:
     - docker push $CONTAINER_IMAGE:latest
 
 test-py27:
-  stage: test
+  stage: test-py27
   image: ${CONTAINER_IMAGE}:${CI_COMMIT_REF_NAME}
   script:
     - /ve/bin/tox -c /ve/bamp -e py27
