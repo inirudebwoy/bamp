@@ -7,7 +7,7 @@ stages:
   - test-py27
   # - test-py35
   # - test-py36
-  # - publish
+  - publish
 
 build:
   stage: build
@@ -26,3 +26,10 @@ test-py27:
   image: ${CONTAINER_IMAGE}:${CI_COMMIT_REF_NAME}
   script:
     - /ve/bin/tox -c /src/bamp -e py27
+
+publish:
+  stage: publish
+  image: ${CONTAINER_IMAGE}:${CI_COMMIT_REF_NAME}
+  script:
+    - /ve/bin/python /src/bamp/setup.py sdist bdist_wheel
+    - /ve/bin/twine upload /src/bamp/dist/*
