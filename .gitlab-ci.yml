@@ -30,6 +30,10 @@ test-py27:
 publish:
   stage: publish
   image: ${CONTAINER_IMAGE}:${CI_COMMIT_REF_NAME}
+  artifacts:
+    expire_in: 30 mins
+    paths:
+      - /src/bamp/dist
   script:
     - /ve/bin/python /src/bamp/setup.py sdist bdist_wheel
-    - /ve/bin/twine upload /src/bamp/dist/**
+    - /ve/bin/twine upload /src/bamp/dist/*
