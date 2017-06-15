@@ -7,6 +7,7 @@ stages:
   - test-py27
   # - test-py35
   # - test-py36
+  - coverage
   - publish
 
 build:
@@ -27,9 +28,24 @@ test-py27:
   script:
     - /ve/bin/tox -c /src/bamp -e py27
 
+coverage:
+  stage: coverage
+  image: ${CONTAINER_IMAGE}:${CI_COMMIT_REF_NAME}
+  script:
+    - /ve/bin/tox -c /src/bamp -e coverage
+
+# add other python version tests
+
+# only tagged releases
 publish:
   stage: publish
   image: ${CONTAINER_IMAGE}:${CI_COMMIT_REF_NAME}
+  only:
+    - /^v\d+\.\d+\.\d+$/  # eg. "v1.2.3", "v1.0.12" etc.
+  except:
+    - branches
+  environment:
+    name: pypi
   script:
     - /ve/bin/python /src/bamp/setup.py sdist bdist_wheel -d /src/bamp/dist
     - /ve/bin/twine upload /src/bamp/dist/*
