@@ -27,8 +27,7 @@ def test_arg_part_with_version():
     runner = CliRunner()
     with runner.isolated_filesystem():
         result = runner.invoke(bamp, ['patch', '-v', '0.0.1'])
-        assert result.exit_code == 2
-        assert '"files" is required.' in result.output
+        assert result.exit_code == 0
 
 
 def test_arg_part_with_version_with_nonexisting_file():
