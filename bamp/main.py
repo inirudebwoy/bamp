@@ -45,8 +45,7 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
     '--file',
     help=docs.FILES_OPTION_HELP,
     type=click.Path(exists=True),
-    multiple=True,
-    callback=required)
+    multiple=True)
 @click.option('vcs', '-V', '--vcs', help=docs.VCS_OPTION_HELP)
 @click.option('allow_dirty', '-a', '--allow-dirty', is_flag=True)
 @click.option(
