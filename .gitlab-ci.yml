@@ -26,13 +26,13 @@ test-py27:
   stage: test-py27
   image: ${CONTAINER_IMAGE}:${CI_COMMIT_REF_NAME}
   script:
-    - /ve/bin/tox -c /src/bamp -e py27
+    - tox -c /src/bamp -e py27
 
 coverage:
   stage: coverage
   image: ${CONTAINER_IMAGE}:${CI_COMMIT_REF_NAME}
   script:
-    - /ve/bin/tox -c /src/bamp -e coverage
+    - tox -c /src/bamp -e coverage
 
 # add other python version tests
 
@@ -47,5 +47,5 @@ publish:
   environment:
     name: pypi
   script:
-    - /ve/bin/python /src/bamp/setup.py sdist bdist_wheel -d /src/bamp/dist
-    - /ve/bin/twine upload /src/bamp/dist/*
+    - python /src/bamp/setup.py sdist bdist_wheel -d /src/bamp/dist
+    - twine upload /src/bamp/dist/*
