@@ -1,7 +1,3 @@
-variables:
-  CONTAINER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH
-  DOCKER_DRIVER: overlay2
-
 test-py27:
   stage: test
   image: python:2.7
@@ -33,7 +29,6 @@ test-py37:
 # only tagged releases
 publish:
   stage: deploy
-  image: ${CONTAINER_IMAGE}:${CI_COMMIT_REF_NAME}
   only:
     - /^v\d+\.\d+\.\d+$/  # eg. "v1.2.3", "v1.0.12" etc.
   except:
@@ -41,5 +36,6 @@ publish:
   environment:
     name: pypi
   script:
-    - python /src/bamp/setup.py sdist bdist_wheel -d /src/bamp/dist
-    - twine upload /src/bamp/dist/*
+    - pip install twine
+    - python setup.py sdist bdist_wheel
+    - twine upload dist/*
