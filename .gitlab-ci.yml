@@ -29,6 +29,7 @@ test-py37:
 # only tagged releases
 publish:
   stage: deploy
+  image: python:3.7
   only:
     - /^v\d+\.\d+\.\d+$/  # eg. "v1.2.3", "v1.0.12" etc.
   except:
