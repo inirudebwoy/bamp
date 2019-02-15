@@ -2,33 +2,30 @@ variables:
   CONTAINER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH
   DOCKER_DRIVER: overlay2
 
-stages:
-  - build
-  - test-py27
-  # - test-py35
-  # - test-py36
-  - coverage
-  - publish
-
-build:
-  stage: build
-  image: docker:stable
-  services:
-    - docker:stable-dind
-  script:
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker pull $CONTAINER_IMAGE:latest
-    - docker build --cache-from $CONTAINER_IMAGE:latest -t $CONTAINER_IMAGE:$CI_COMMIT_REF_NAME -t $CONTAINER_IMAGE:latest .
-    - docker push $CONTAINER_IMAGE:$CI_COMMIT_REF_NAME
-    - docker push $CONTAINER_IMAGE:latest
-
 test-py27:
-  stage: test-py27
-  image: ${CONTAINER_IMAGE}:${CI_COMMIT_REF_NAME}
+  stage: test
+  image: python:2.7
   script:
-    - tox -c /src/bamp -e py27
+    - pip install tox
+    - tox -e py27
 
-# add other python version tests
+test-py35:
+  stage: test
+  image: python:3.5
+     - pip install tox
+     - tox -e py35
+
+test-py36:
+  stage: test
+  image: python:3.6
+    - pip install tox
+    - tox -e py36
+
+test-py37:
+  stage: test
+  image: python:3.7
+    - pip install tox
+    - tox -e py37
 
 # only tagged releases
 publish:
