@@ -10,7 +10,7 @@ def test_arg_part_missing():
     with runner.isolated_filesystem():
         result = runner.invoke(bamp)
         assert result.exit_code == 2
-        assert 'Missing argument "[patch|minor|major]"' in result.output
+        assert 'Missing argument "part"' in result.output
 
 
 def test_arg_part_no_version():
@@ -58,7 +58,7 @@ def test_arg_unsupported_part():
     with runner.isolated_filesystem():
         result = runner.invoke(bamp, ['foobar'])
         assert result.exit_code == 2
-        assert 'Invalid value for "[patch|minor|major]"' in result.output
+        assert 'Invalid value for "part"' in result.output
 
 
 def test_with_default_commit_no_vcs():
