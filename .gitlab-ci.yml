@@ -32,7 +32,7 @@ test-py37:
 
 # only tagged releases
 publish:
-  stage: publish
+  stage: deploy
   image: ${CONTAINER_IMAGE}:${CI_COMMIT_REF_NAME}
   only:
     - /^v\d+\.\d+\.\d+$/  # eg. "v1.2.3", "v1.0.12" etc.
