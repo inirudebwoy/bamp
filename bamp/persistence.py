@@ -67,8 +67,12 @@ def _rm_files(file_list):
 
 
 def _ver_is_found(version, line):
+    # only version number is in line
+    if version == line:
+        return True
+
     ver_re = f'(?<=[" \'=]){version}(?=[" \'])'
-    return re.search(ver_re, line)
+    return bool(re.search(ver_re, line))
 
 def _file_bamper(cur_version, new_version, file_path):
     """Replace version in file
