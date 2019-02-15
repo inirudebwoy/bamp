@@ -28,12 +28,6 @@ test-py27:
   script:
     - tox -c /src/bamp -e py27
 
-coverage:
-  stage: coverage
-  image: ${CONTAINER_IMAGE}:${CI_COMMIT_REF_NAME}
-  script:
-    - tox -c /src/bamp -e coverage
-
 # add other python version tests
 
 # only tagged releases
