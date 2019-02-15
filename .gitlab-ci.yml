@@ -2,29 +2,25 @@ test-py27:
   stage: test
   image: python:2.7
   script:
-    - pip install tox
-    - tox -e py27
+    - python setup.py test
 
 test-py35:
   stage: test
   image: python:3.5
   script:
-     - pip install tox
-     - tox -e py35
+     - python setup.py test
 
 test-py36:
   stage: test
   image: python:3.6
   script:
-    - pip install tox
-    - tox -e py36
+    - python setup.py test
 
 test-py37:
   stage: test
   image: python:3.7
   script:
-    - pip install tox
-    - tox -e py37
+    - python setup.py test
 
 # only tagged releases
 publish:
