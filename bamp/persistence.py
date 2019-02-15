@@ -71,7 +71,7 @@ def _ver_is_found(version, line):
     if version == line:
         return True
 
-    ver_re = f'(?<=[" \'=]){version}(?=[" \'])'
+    ver_re = '(?<=[" \'=]){}(?=[" \'])'.format(version)
     return bool(re.search(ver_re, line))
 
 def _file_bamper(cur_version, new_version, file_path):
