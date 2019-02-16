@@ -55,15 +55,9 @@ def create_commit(repo, files, message):
     :type: str
 
     """
-    # FIXME: verify repo links, it is certain that bamp will run inside repo
-    # so I'm not sure if normpath is required
-    # It might be good to apply file paths to repo root path
-    # as this is what people will expect IMHO
     for f in files:
         porcelain.add(repo, os.path.normpath(f))
-        import pdb; pdb.set_trace()
-
-    return porcelain.commit(repo, message, encoding='utf-8')
+    return porcelain.commit(repo, message.encode('utf-8'))
 
 
 def create_tag(repo, commit_sha1, tag_name):
