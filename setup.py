@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
+import io
+import os
 from setuptools import setup, find_packages
+
+here = os.path.abspath(os.path.dirname(__file__))
+with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
     name='bamp',
@@ -10,13 +16,14 @@ setup(
       bamp=bamp.main:bamp
       ''',
     packages=find_packages(),
-    long_description='Bamp version of your packages according to semantic versioning. Automagically create commits and tags.',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     include_package_data=True,
     zip_safe=True,
     description='Bamp version according to semantic versioning',
     author='Michał Klich',
     author_email='michal@michalklich.com',
-    url='https://github.com/inirudebwoy/bamp',
+    url='https://gitlab.com/the_speedball/bamp',
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     license='MIT',
