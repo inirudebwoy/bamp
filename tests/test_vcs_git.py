@@ -52,16 +52,16 @@ def test_get_repo_raise_exception():
 
 
 def test_create_commit_with_unicode_message(git_repo):
-    commit_sha1 = create_commit(git_repo, '', u'bździągwą')
+    commit_sha1 = create_commit(git_repo, ['config.ini'], u'bździągwą')
     assert commit_sha1
 
 
 def test_create_commit_with_message(git_repo):
-    commit_sha1 = create_commit(git_repo, '', 'a')
+    commit_sha1 = create_commit(git_repo, ['config.ini'], 'a')
     assert commit_sha1
 
 
 def test_create_tag_with_custom_name(git_repo):
-    commit_sha1 = create_commit(git_repo, '', 'Tag this commit')
+    commit_sha1 = create_commit(git_repo, ['config.ini'], 'Tag this commit')
     tag = create_tag(git_repo, commit_sha1, 'tag-commit')
     assert tag
