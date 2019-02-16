@@ -10,7 +10,9 @@ setup(
       bamp=bamp.main:bamp
       ''',
     packages=find_packages(),
+    # FIXME: load file into long_description
     long_description='Bamp version of your packages according to semantic versioning. Automagically create commits and tags.',
+    long_description_content_type='text/markdown',
     include_package_data=True,
     zip_safe=True,
     description='Bamp version according to semantic versioning',
