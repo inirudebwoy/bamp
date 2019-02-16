@@ -37,6 +37,11 @@ publish:
   environment:
     name: pypi
   script:
+    - pip install --upgrade pip
+    - pip install --upgrade setuptools
     - pip install "twine>1,<2"
     - python setup.py sdist bdist_wheel
     - twine upload dist/*
+  artifacts:
+    paths: dist/
+    expire_in: 1 month
