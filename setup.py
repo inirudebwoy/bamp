@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+import os
 from setuptools import setup, find_packages
 
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+here = path.abspath(path.dirname(__file__))
+with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
