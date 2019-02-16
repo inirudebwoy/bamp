@@ -61,5 +61,6 @@ publish:
     - python setup.py sdist bdist_wheel
     - twine upload dist/*
   artifacts:
-    paths: dist/
+    paths:
+      - dist/
     expire_in: 1 month
