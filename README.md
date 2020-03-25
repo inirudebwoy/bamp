@@ -1,6 +1,6 @@
 Bamp
 =====
-[![Build Status](https://travis-ci.org/inirudebwoy/bamp.svg?branch=master)](https://travis-ci.org/inirudebwoy/bamp)
+[![pipeline status](https://gitlab.com/the_speedball/bamp/badges/master/pipeline.svg)](https://gitlab.com/the_speedball/bamp/commits/master)
 
 **Pronounciation**
 

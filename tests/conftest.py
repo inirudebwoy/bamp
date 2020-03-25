@@ -5,7 +5,10 @@ from dulwich import porcelain
 
 
 @pytest.fixture(scope='session')
-def git_repo(path=None):
+def git_repo():
+    return git_repo_fixture()
+
+def git_repo_fixture(path=None):
     """Fixture creating git repo.
     Can be used as a pytest fixture, in such case path where repo is created
     is random, created using tempfile module.

@@ -1,3 +1,4 @@
+import six
 from six import StringIO
 from six.moves import configparser
 
@@ -7,7 +8,10 @@ from bamp.config.ini import config_dump
 def make_config(content):
     config = configparser.ConfigParser()
     input_file = StringIO(content)
-    config.readfp(input_file)
+    if six.PY2:
+        config.readfp(input_file)
+    else:
+        config.read_file(input_file)
     return config
 
 
