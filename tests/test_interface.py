@@ -1,7 +1,6 @@
 from click.testing import CliRunner
 
 from bamp.main import bamp
-from .conftest import git_repo
 
 
 def test_arg_part_missing():
@@ -72,7 +71,7 @@ def test_with_default_commit_no_vcs():
         assert result.exit_code == 1
 
 
-def test_default_tag_default_commit_with_vcs():
+def test_default_tag_default_commit_with_vcs(git_repo):
     """bamp patch -v 0.0.1 -f version.ini -ct"""
     runner = CliRunner()
     with runner.isolated_filesystem():
@@ -84,7 +83,7 @@ def test_default_tag_default_commit_with_vcs():
         assert result.exit_code == 0
 
 
-def test_custom_tag_default_commit_with_vcs():
+def test_custom_tag_default_commit_with_vcs(git_repo):
     """bamp patch -v 0.0.1 -f version.ini -c -t -T tag-{new_version}"""
     runner = CliRunner()
     with runner.isolated_filesystem():
