@@ -46,6 +46,14 @@ to bamp and the current version to minimise the effort.
 
         $ bamp patch --commit --message "Bamping!"
 
+* outputting the new version number without actually changing files.
+
+        $ bamp patch --dry-run
+
+* outputting current version only (implies `--dry-run`).
+  
+        $ bamp current
+
 Configuration
 =================
 

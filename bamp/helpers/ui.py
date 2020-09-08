@@ -1,7 +1,10 @@
 import sys
+import logging
 from functools import partial, wraps
 
 import click
+
+logger = logging.getLogger(__name__)
 
 
 def verify_response(func):
@@ -11,6 +14,7 @@ def verify_response(func):
     With successful execution results are returned to the caller.
 
     """
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         result, errors = func(*args, **kwargs)
@@ -19,6 +23,7 @@ def verify_response(func):
 
         # call returned error
         error_exit(errors)
+
     return wrapper
 
 
@@ -42,5 +47,12 @@ def _echo_exit(messages, exit_, color):
     if exit_:
         sys.exit(exit_)
 
-error_exit = partial(_echo_exit, exit_=1, color='red')
-ok_exit = partial(_echo_exit, exit_=0, color='green')
+
+def machine_out(message):
+    ctx = click.get_current_context()
+    new_line = ctx.params.get("new_line")
+    click.echo(message, nl=new_line)
+
+
+error_exit = partial(_echo_exit, exit_=1, color="red")
+ok_exit = partial(_echo_exit, exit_=0, color="green")
