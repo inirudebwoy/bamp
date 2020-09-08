@@ -29,6 +29,11 @@ CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
+@click.option(
+    "--dry-run",
+    help=docs.DRY_RUN_HELP,
+    is_flag=True,
+)
 @click.option("-n", "new_line", help="Don't print new line", is_flag=True, default=True)
 @click.option(
     "--debug",
@@ -70,6 +75,7 @@ CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 @click.argument("part", nargs=1, type=click.Choice(["patch", "minor", "major"]))
 @add_config
 def bamp(
+    dry_run,
     new_line,
     version,
     part,
@@ -86,6 +92,9 @@ def bamp(
     sanity_checks(root_path)
 
     new_version = bamp_version(version, part)
+    if dry_run:
+        return machine_out(new_version)
+
     bamp_files(version, new_version, files)
 
     if commit:
