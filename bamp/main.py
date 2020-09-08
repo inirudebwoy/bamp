@@ -72,7 +72,7 @@ CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
     help=docs.TAG_NAME_OPTION_HELP,
     metavar=docs.TAG_NAME_OPTION_METAVAR,
 )
-@click.argument("part", nargs=1, type=click.Choice(["patch", "minor", "major"]))
+@click.argument("part", nargs=1, type=click.Choice(["patch", "minor", "major", "current"]))
 @add_config
 def bamp(
     dry_run,
@@ -90,6 +90,9 @@ def bamp(
 ):
     root_path = get_root_path()
     sanity_checks(root_path)
+
+    if part == "current":
+        return machine_out(version)
 
     new_version = bamp_version(version, part)
     if dry_run:
