@@ -9,7 +9,7 @@ from tempfile import mkstemp
 from bamp.exc import VersionNotFound
 from bamp.helpers.ui import verify_response
 
-PathPair = namedtuple('PathPair', ['orig', 'copy'])
+PathPair = namedtuple("PathPair", ["orig", "copy"])
 
 logger = logging.getLogger(__name__)
 
@@ -39,10 +39,9 @@ def bamp_files(cur_version, new_version, files):
         try:
             bamped_files.append(_file_bamper(cur_version, new_version, f))
         except IOError:
-            errors.append('Error accessing file: {0}'.format(f))
+            errors.append("Error accessing file: {0}".format(f))
         except VersionNotFound:
-            errors.append(
-                'Version {0} not found in {1}'.format(cur_version, f))
+            errors.append("Version {0} not found in {1}".format(cur_version, f))
 
     if errors:
         return False, errors
@@ -74,6 +73,7 @@ def _ver_is_found(version, line):
     ver_re = '(?<=[" \'=]){}[" \\\r\\n]*'.format(version)
     return bool(re.search(ver_re, line))
 
+
 def _file_bamper(cur_version, new_version, file_path):
     """Replace version in file
 
@@ -93,8 +93,8 @@ def _file_bamper(cur_version, new_version, file_path):
 
     """
     _, copy_path = mkstemp()
-    with open(copy_path, mode='w', encoding='utf-8') as cf:
-        with open(file_path, encoding='utf-8') as of:
+    with open(copy_path, mode="w", encoding="utf-8") as cf:
+        with open(file_path, encoding="utf-8") as of:
             found = False
             for line in of.readlines():
                 if _ver_is_found(cur_version, line):

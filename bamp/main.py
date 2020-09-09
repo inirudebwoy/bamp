@@ -72,7 +72,9 @@ CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
     help=docs.TAG_NAME_OPTION_HELP,
     metavar=docs.TAG_NAME_OPTION_METAVAR,
 )
-@click.argument("part", nargs=1, type=click.Choice(["patch", "minor", "major", "current"]))
+@click.argument(
+    "part", nargs=1, type=click.Choice(["patch", "minor", "major", "current"])
+)
 @add_config
 def bamp(
     dry_run,

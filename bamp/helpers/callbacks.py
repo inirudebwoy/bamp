@@ -21,8 +21,8 @@ def required(ctx, param, value):
     if not value:
         raise click.UsageError(
             '"%(name)s" is required. Add to config or pass with %(flag)s '
-            'option.' % {'name': param.name,
-                         'flag': param.opts})
+            "option." % {"name": param.name, "flag": param.opts}
+        )
     return value
 
 
@@ -39,7 +39,7 @@ def read_config(ctx, param, value):
         try:
             config = prepare_config(config_path)
         except ErrorConfigParsing:
-            logger.exception('Could not parse the config file.')
+            logger.exception("Could not parse the config file.")
             sys.exit(1)
 
     ctx.default_map = make_default_map(config)
@@ -50,8 +50,8 @@ def enable_debug(ctx, param, value):
     """Enable debugging"""
     logging.config.dictConfig(LOGGING)
     if value:
-        LOGGING['filters']['exc_filter']['debug'] = True
-        logger.debug('Debug is on.')
+        LOGGING["filters"]["exc_filter"]["debug"] = True
+        logger.debug("Debug is on.")
         logging.config.dictConfig(LOGGING)
 
     return value

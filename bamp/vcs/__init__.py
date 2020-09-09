@@ -24,8 +24,7 @@ def _get_vcs_module(vcs_type):
 
     """
     try:
-        vcs_module = importlib.import_module('{0}.{1}'.format(__name__,
-                                                              vcs_type))
+        vcs_module = importlib.import_module("{0}.{1}".format(__name__, vcs_type))
     except ImportError:
         logger.exception('Unable to find module supporting "%s".', vcs_type)
         raise MissingVcsModule()
@@ -55,10 +54,14 @@ def create_commit(vcs_type, files, message):
     try:
         return vcs.create_commit(repo, files, message)
     except:
-        logger.exception('Could not create a commit message "%s" '
-                         'for the repo "%s" under path "%s"', message,
-                         vcs_type, root_path)
-        error_exit('Could not create a commit message.')
+        logger.exception(
+            'Could not create a commit message "%s" '
+            'for the repo "%s" under path "%s"',
+            message,
+            vcs_type,
+            root_path,
+        )
+        error_exit("Could not create a commit message.")
 
 
 def create_tag(vcs_type, commit_sha1, tag_name):
@@ -92,13 +95,13 @@ def is_tree_clean(vcs_type, repo_path):
 
     """
     ctx = click.get_current_context()
-    if not ctx.params.get('allow_dirty'):
+    if not ctx.params.get("allow_dirty"):
         return True, []
 
     vcs = _get_vcs_module(vcs_type)
     clean = vcs.is_tree_clean(repo_path)
     if not clean:
-        return False, ['Directory is not clean. Commit or stash your changes.']
+        return False, ["Directory is not clean. Commit or stash your changes."]
     return True, []
 
 
@@ -114,5 +117,4 @@ def make_message(message, current_version, new_version):
     :returns: commit message
     :rtype: str
     """
-    return message.format(
-        current_version=current_version, new_version=new_version)
+    return message.format(current_version=current_version, new_version=new_version)

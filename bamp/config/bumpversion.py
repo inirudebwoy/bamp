@@ -32,21 +32,21 @@ def config_dump(config):
 
     """
     dict_config = {}
-    bumpversion_sections = [s for s in config.sections() if 'bumpversion' in s]
+    bumpversion_sections = [s for s in config.sections() if "bumpversion" in s]
 
     for section in bumpversion_sections:
-        if ':' not in section:
+        if ":" not in section:
             for key_item, value_item in config.items(section):
 
                 # bumpversion uses current_version instead of version
-                if key_item == 'current_version':
-                    key_item = 'version'
+                if key_item == "current_version":
+                    key_item = "version"
 
                 dict_config[key_item] = value_item
         else:
-            sub = section.split(':')[2]
-            files = dict_config.get('files', ())
-            dict_config['files'] = files + (sub, )
+            sub = section.split(":")[2]
+            files = dict_config.get("files", ())
+            dict_config["files"] = files + (sub,)
 
     return dict_config
 
@@ -64,6 +64,6 @@ def prepare_config(filename):
     try:
         config = load_config(filename)
     except configparser.Error:
-        logger.exception('Config could not be parsed due to an error.')
+        logger.exception("Config could not be parsed due to an error.")
         raise ErrorConfigParsing()
     return config
