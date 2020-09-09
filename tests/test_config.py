@@ -1,8 +1,12 @@
 import pytest
 
 import bamp
-from bamp.config import (DEFAULT_CONFIG, make_default_map, get_config_module,
-                         prepare_config)
+from bamp.config import (
+    DEFAULT_CONFIG,
+    make_default_map,
+    get_config_module,
+    prepare_config,
+)
 from bamp.exc import MissingConfigParser, ErrorConfigParsing
 
 
@@ -11,19 +15,19 @@ def test_empty_config():
 
 
 def test_override_default_value():
-    def_map = make_default_map({'tag': True})
-    assert def_map.get('tag')
+    def_map = make_default_map({"tag": True})
+    assert def_map.get("tag")
 
 
 def test_override_all_values():
     config = {
-        'vcs': 'other',
-        'commit': True,
-        'message': 'Larch',
-        'tag_name': 'Spam',
-        'tag': True,
-        'files': 'yes',
-        'allow_dirty': True
+        "vcs": "other",
+        "commit": True,
+        "message": "Larch",
+        "tag_name": "Spam",
+        "tag": True,
+        "files": "yes",
+        "allow_dirty": True,
     }
     def_map = make_default_map(config)
     for k in def_map:
@@ -31,18 +35,18 @@ def test_override_all_values():
 
 
 def test_get_config_module_cfg_ext():
-    module = get_config_module('setup.cfg')
-    assert 'ini' in module.__name__
+    module = get_config_module("setup.cfg")
+    assert "ini" in module.__name__
 
 
 def test_get_config_module_ini_ext():
-    module = get_config_module('setup.ini')
-    assert 'ini' in module.__name__
+    module = get_config_module("setup.ini")
+    assert "ini" in module.__name__
 
 
 def test_get_config_module_unknown_ext():
     with pytest.raises(MissingConfigParser):
-        get_config_module('setup.unknown')
+        get_config_module("setup.unknown")
 
 
 class ConfigMock(object):
@@ -60,6 +64,6 @@ def test_prepare_config_parsing_error(monkeypatch):
 
         return ConfigMock(raiser)
 
-    monkeypatch.setattr(bamp.config, 'get_config_module', mockreturn)
+    monkeypatch.setattr(bamp.config, "get_config_module", mockreturn)
     with pytest.raises(ErrorConfigParsing):
-        prepare_config('config.ini')
+        prepare_config("config.ini")

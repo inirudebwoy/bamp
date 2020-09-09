@@ -21,26 +21,23 @@ def status_mockreturn(mock_status):
 
 
 def test_is_tree_clean_no_staged_no_unstaged(monkeypatch):
-    monkeypatch.setattr(porcelain, 'status', status_mockreturn)
-    assert is_tree_clean({'staged': {}, 'unstaged': []})
+    monkeypatch.setattr(porcelain, "status", status_mockreturn)
+    assert is_tree_clean({"staged": {}, "unstaged": []})
 
 
 def test_is_tree_clean_no_staged_with_unstaged(monkeypatch):
-    monkeypatch.setattr(porcelain, 'status', status_mockreturn)
-    assert not is_tree_clean({'staged': {}, 'unstaged': ['file']})
+    monkeypatch.setattr(porcelain, "status", status_mockreturn)
+    assert not is_tree_clean({"staged": {}, "unstaged": ["file"]})
 
 
 def test_is_tree_clean_with_staged_no_unstaged(monkeypatch):
-    monkeypatch.setattr(porcelain, 'status', status_mockreturn)
-    assert not is_tree_clean({'staged': {'file': 'path'}, 'unstaged': []})
+    monkeypatch.setattr(porcelain, "status", status_mockreturn)
+    assert not is_tree_clean({"staged": {"file": "path"}, "unstaged": []})
 
 
 def test_is_tree_clean_with_staged_with_unstaged(monkeypatch):
-    monkeypatch.setattr(porcelain, 'status', status_mockreturn)
-    assert not is_tree_clean({
-        'staged': {'file': 'path'},
-        'unstaged': ['moar files']
-    })
+    monkeypatch.setattr(porcelain, "status", status_mockreturn)
+    assert not is_tree_clean({"staged": {"file": "path"}, "unstaged": ["moar files"]})
 
 
 def test_get_repo_raise_exception():
@@ -53,16 +50,16 @@ def test_get_repo_raise_exception():
 
 
 def test_create_commit_with_unicode_message(git_repo):
-    commit_sha1 = create_commit(git_repo, '', six.u('bździągwą'))
+    commit_sha1 = create_commit(git_repo, "", six.u("bździągwą"))
     assert commit_sha1
 
 
 def test_create_commit_with_message(git_repo):
-    commit_sha1 = create_commit(git_repo, '', 'a')
+    commit_sha1 = create_commit(git_repo, "", "a")
     assert commit_sha1
 
 
 def test_create_tag_with_custom_name(git_repo):
-    commit_sha1 = create_commit(git_repo, '', 'Tag this commit')
-    tag = create_tag(git_repo, commit_sha1, 'tag-commit')
+    commit_sha1 = create_commit(git_repo, "", "Tag this commit")
+    tag = create_tag(git_repo, commit_sha1, "tag-commit")
     assert tag

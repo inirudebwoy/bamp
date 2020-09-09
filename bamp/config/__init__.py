@@ -10,13 +10,13 @@ from bamp.exc import ErrorConfigParsing, MissingConfigParser
 logger = logging.getLogger(__name__)
 
 DEFAULT_CONFIG = {
-    'vcs': 'git',
-    'commit': False,
-    'message': 'Bamp version: {current_version} -> {new_version}',
-    'tag_name': '{new_version}',
-    'tag': False,
-    'files': [],
-    'allow_dirty': False
+    "vcs": "git",
+    "commit": False,
+    "message": "Bamp version: {current_version} -> {new_version}",
+    "tag_name": "{new_version}",
+    "tag": False,
+    "files": [],
+    "allow_dirty": False,
 }
 
 
@@ -32,9 +32,9 @@ def add_config(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         conf = find_config()
-        files = kwargs.get('files')
+        files = kwargs.get("files")
         if files and conf and conf not in files:
-            kwargs['files'] += (conf, )
+            kwargs["files"] += (conf,)
         return func(*args, **kwargs)
 
     return wrapper
@@ -51,12 +51,12 @@ def find_config():
 
     """
     ctx = click.get_current_context()
-    if ctx.params.get('config'):
-        return ctx.params.get('config')
-    if os.path.exists('bamp.cfg'):
-        return 'bamp.cfg'
-    elif os.path.exists('setup.cfg'):
-        return 'setup.cfg'
+    if ctx.params.get("config"):
+        return ctx.params.get("config")
+    if os.path.exists("bamp.cfg"):
+        return "bamp.cfg"
+    elif os.path.exists("setup.cfg"):
+        return "setup.cfg"
     else:
         return None
 
@@ -87,13 +87,13 @@ def get_config_module(filename):
 
     """
     _, ext = os.path.splitext(filename)
-    if ext == '.cfg':  # this really is INI
-        ext = '.ini'  # would some mapping be better?
+    if ext == ".cfg":  # this really is INI
+        ext = ".ini"  # would some mapping be better?
 
     try:
         with open(filename) as f:
-            if 'bumpversion' in f.read():
-                ext = '.bumpversion'
+            if "bumpversion" in f.read():
+                ext = ".bumpversion"
     except IOError:
         pass
 
@@ -122,7 +122,7 @@ def prepare_config(filename):
     try:
         conf_dict = config.prepare_config(filename)
     except ErrorConfigParsing:
-        logger.exception('Error parsing config.')
+        logger.exception("Error parsing config.")
         raise
     return conf_dict
 

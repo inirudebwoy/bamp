@@ -26,7 +26,7 @@ def get_repo(repo_path):
     try:
         return porcelain.open_repo(repo_path)
     except NotGitRepository:
-        err_msg = 'Unable to open repository.'
+        err_msg = "Unable to open repository."
         logger.exception(err_msg)
         raise VCSException(err_msg)
 
@@ -61,6 +61,6 @@ def create_commit(repo, files, message):
 
 
 def create_tag(repo, commit_sha1, tag_name):
-    tag_ref = 'refs/tags/{0}'.format(tag_name)
+    tag_ref = "refs/tags/{0}".format(tag_name)
     repo.refs[six.b(tag_ref)] = commit_sha1
     return repo.refs[six.b(tag_ref)]

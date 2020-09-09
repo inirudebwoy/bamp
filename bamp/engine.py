@@ -12,8 +12,8 @@ from collections import OrderedDict
 from .exc import IncorrectPart
 
 # TODO: taken from config
-VERSION_PARTS = ('major', 'minor', 'patch')
-VERSION_SEPARATOR = '.'
+VERSION_PARTS = ("major", "minor", "patch")
+VERSION_SEPARATOR = "."
 
 logger = logging.getLogger(__name__)
 
@@ -84,8 +84,7 @@ def bamp_version(version, part):
     """
     version = split_version(version)
     if part not in version:
-        raise IncorrectPart(
-            '{0} could not be found in {1}'.format(part, version))
+        raise IncorrectPart("{0} could not be found in {1}".format(part, version))
 
     bamped = _bamp(version, part)
     return join_version(bamped.values())
