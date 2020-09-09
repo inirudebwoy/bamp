@@ -22,7 +22,7 @@ setup(
     zip_safe=True,
     description="Bamp version according to semantic versioning",
     author="Michał Klich",
-    author_email="michal@michalklich.com",
+    author_email="michal@klichx.dev",
     url="https://gitlab.com/the_speedball/bamp",
     setup_requires=["pytest-runner"],
     tests_require=["pytest"],
