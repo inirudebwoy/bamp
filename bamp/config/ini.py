@@ -37,14 +37,14 @@ def config_dump(config):
 
     """
     dict_config = {}
-    bamp_sections = [s for s in config.sections() if 'bamp' in s]
+    bamp_sections = [s for s in config.sections() if "bamp" in s]
     for section in bamp_sections:
         for key_item, value_item in config.items(section):
             # transforming files variable into tuple
-            if key_item == 'files' and '\n' in value_item:  # multiline
+            if key_item == "files" and "\n" in value_item:  # multiline
                 value_item = tuple(value_item.split())
-            elif key_item == 'files':
-                value_item = (value_item, )
+            elif key_item == "files":
+                value_item = (value_item,)
             dict_config[key_item] = value_item
     return dict_config
 
@@ -62,6 +62,6 @@ def prepare_config(filename):
     try:
         config = load_config(filename)
     except configparser.Error:
-        logger.exception('Config could not be parsed due to an error.')
+        logger.exception("Config could not be parsed due to an error.")
         raise ErrorConfigParsing()
     return config

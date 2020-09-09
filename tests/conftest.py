@@ -4,9 +4,10 @@ import pytest
 from dulwich import porcelain
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def git_repo():
     return git_repo_fixture()
+
 
 def git_repo_fixture(path=None):
     """Fixture creating git repo.
@@ -24,7 +25,7 @@ def git_repo_fixture(path=None):
         path = mkdtemp()
     repo = porcelain.init(path)
     config = repo.get_config()
-    config.set(b'user', b'name', b'Mr. Git')
-    config.set(b'user', b'email', b'mr.git@dulwich.co.uk')
+    config.set(b"user", b"name", b"Mr. Git")
+    config.set(b"user", b"email", b"mr.git@dulwich.co.uk")
     config.write_to_path()
     return repo

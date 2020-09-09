@@ -12,23 +12,12 @@ class DebugFilter(logging.Filter):
 
 
 LOGGING = {
-    'version': 1,
-    'filters': {
-        'exc_filter': {
-            '()': DebugFilter,
-            'debug': False
-        }
+    "version": 1,
+    "filters": {"exc_filter": {"()": DebugFilter, "debug": False}},
+    "handlers": {
+        "console": {"class": "logging.StreamHandler", "filters": ["exc_filter"]}
     },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'filters': ['exc_filter']
-        }
+    "loggers": {
+        "bamp": {"level": "DEBUG", "handlers": ["console"]},
     },
-    'loggers': {
-        'bamp': {
-            'level': 'DEBUG',
-            'handlers': ['console']
-        },
-    }
 }
