@@ -24,6 +24,25 @@ test-py38:
     - pip install "tox>3,<4"
     - tox -e py38
 
+build:
+  stage: build
+  image: python:3.8
+  # only:
+  #   - /^v\d+\.\d+\.\d+$/ # eg. "v1.2.3", "v1.0.12" etc.
+  # except:
+  #   - branches
+  # environment:
+  #   name: pypi
+  script:
+    - poetry build
+    - ~/.local/bin/bamp -h
+    - echo $?
+  artifacts:
+    untracked: false
+    expire_in: 30 days
+    paths:
+      - dist/
+
 # only tagged releases
 publish:
   stage: deploy
@@ -35,4 +54,4 @@ publish:
   environment:
     name: pypi
   script:
-    - poetry publish --build --username $POETRY_PYPI_USERNAME --password $POETRY_PYPI_PASSWORD
+    - poetry publish --username $POETRY_PYPI_USERNAME --password $POETRY_PYPI_PASSWORD
