@@ -3,6 +3,11 @@ default:
     - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
     - export PATH=$PATH:$HOME/.poetry/bin
 
+stages:
+  - test
+  - build
+  - deploy
+
 test-py36:
   stage: test
   image: python:3.6
@@ -24,7 +29,48 @@ test-py38:
     - pip install "tox>3,<4"
     - tox -e py38
 
-# only tagged releases
+build-wheel:
+  stage: build
+  image: python:3.8
+  only:
+    - /^v\d+\.\d+\.\d+$/ # eg. "v1.2.3", "v1.0.12" etc.
+  except:
+    - branches
+  environment:
+    name: pypi
+  script:
+    - poetry build
+    - python -m pip install pipx
+    - pipx install dist/*.whl
+    - ~/.local/bin/bamp -h
+    - echo $?
+  artifacts:
+    untracked: false
+    expire_in: 30 days
+    paths:
+      - dist/*.whl
+
+build-sdist:
+  stage: build
+  image: python:3.8
+  only:
+    - /^v\d+\.\d+\.\d+$/ # eg. "v1.2.3", "v1.0.12" etc.
+  except:
+    - branches
+  environment:
+    name: pypi
+  script:
+    - poetry build
+    - python -m pip install pipx
+    - pipx install dist/*.tar.gz
+    - ~/.local/bin/bamp -h
+    - echo $?
+  artifacts:
+    untracked: false
+    expire_in: 30 days
+    paths:
+      - dist/*.tar.gz
+
 publish:
   stage: deploy
   image: python:3.8
@@ -35,4 +81,4 @@ publish:
   environment:
     name: pypi
   script:
-    - poetry publish --build --username $POETRY_PYPI_USERNAME --password $POETRY_PYPI_PASSWORD
+    - poetry publish --username $POETRY_PYPI_USERNAME --password $POETRY_PYPI_PASSWORD
