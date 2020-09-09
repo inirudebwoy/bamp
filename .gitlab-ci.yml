@@ -2,15 +2,30 @@ default:
   before_script:
     - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
     - export PATH=$PATH:$HOME/.poetry/bin
+    - export POETRY_VIRTUALENVS_PATH=$CI_PROJECT_DIR/.cache/poetry/virtualenvs
+    - export POETRY_CACHE_DIR=$CI_PROJECT_DIR/.cache/poetry
+    - poetry config --list
 
 stages:
   - test
   - build
   - deploy
 
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+    - venv/
+    - .cache/pypoetry
+
 test-py36:
   stage: test
   image: python:3.6
+  cache:
+    paths:
+      - .tox/py36
   script:
     - pip install "tox>3,<4"
     - tox -e py36
@@ -18,6 +33,9 @@ test-py36:
 test-py37:
   stage: test
   image: python:3.7
+  cache:
+    paths:
+      - .tox/py37
   script:
     - pip install "tox>3,<4"
     - tox -e py37
@@ -25,6 +43,9 @@ test-py37:
 test-py38:
   stage: test
   image: python:3.8
+  cache:
+    paths:
+      - .tox/py38
   script:
     - pip install "tox>3,<4"
     - tox -e py38
@@ -33,6 +54,9 @@ test-py39:
   stage: test
   image: python:rc
   allow_failure: true
+  cache:
+    paths:
+      - .tox/py39
   script:
     - pip install "tox>3,<4"
     - tox -e py39
