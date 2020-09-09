@@ -32,12 +32,12 @@ test-py38:
 build-wheel:
   stage: build
   image: python:3.8
-  # only:
-  #   - /^v\d+\.\d+\.\d+$/ # eg. "v1.2.3", "v1.0.12" etc.
-  # except:
-  #   - branches
-  # environment:
-  #   name: pypi
+  only:
+    - /^v\d+\.\d+\.\d+$/ # eg. "v1.2.3", "v1.0.12" etc.
+  except:
+    - branches
+  environment:
+    name: pypi
   script:
     - poetry build
     - python -m pip install pipx
@@ -53,12 +53,12 @@ build-wheel:
 build-sdist:
   stage: build
   image: python:3.8
-  # only:
-  #   - /^v\d+\.\d+\.\d+$/ # eg. "v1.2.3", "v1.0.12" etc.
-  # except:
-  #   - branches
-  # environment:
-  #   name: pypi
+  only:
+    - /^v\d+\.\d+\.\d+$/ # eg. "v1.2.3", "v1.0.12" etc.
+  except:
+    - branches
+  environment:
+    name: pypi
   script:
     - poetry build
     - python -m pip install pipx
@@ -71,7 +71,6 @@ build-sdist:
     paths:
       - dist/*.tar.gz
 
-# only tagged releases
 publish:
   stage: deploy
   image: python:3.8
