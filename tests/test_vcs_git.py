@@ -3,6 +3,7 @@ import os
 from tempfile import mkstemp
 
 import pytest
+import six
 from dulwich import porcelain
 
 from bamp.exc import VCSException
@@ -52,7 +53,7 @@ def test_get_repo_raise_exception():
 
 
 def test_create_commit_with_unicode_message(git_repo):
-    commit_sha1 = create_commit(git_repo, '', u'bździągwą')
+    commit_sha1 = create_commit(git_repo, '', six.u('bździągwą'))
     assert commit_sha1
 
 

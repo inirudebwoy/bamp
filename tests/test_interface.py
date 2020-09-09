@@ -1,7 +1,7 @@
 from click.testing import CliRunner
 
 from bamp.main import bamp
-from .conftest import git_repo
+from .conftest import git_repo_fixture
 
 
 def test_arg_part_missing():
@@ -10,7 +10,7 @@ def test_arg_part_missing():
     with runner.isolated_filesystem():
         result = runner.invoke(bamp)
         assert result.exit_code == 2
-        assert 'Missing argument "part"' in result.output
+        assert 'Missing argument "[patch|minor|major|current]"' in result.output
 
 
 def test_arg_part_no_version():
@@ -58,7 +58,7 @@ def test_arg_unsupported_part():
     with runner.isolated_filesystem():
         result = runner.invoke(bamp, ['foobar'])
         assert result.exit_code == 2
-        assert 'Invalid value for "part"' in result.output
+        assert 'Invalid value for "[patch|minor|major|current]"' in result.output
 
 
 def test_with_default_commit_no_vcs():
@@ -76,7 +76,7 @@ def test_default_tag_default_commit_with_vcs():
     """bamp patch -v 0.0.1 -f version.ini -ct"""
     runner = CliRunner()
     with runner.isolated_filesystem():
-        git_repo('.')
+        git_repo_fixture('.')
         with open('version.ini', 'w') as v:
             v.write('0.0.1')
         result = runner.invoke(
@@ -88,7 +88,7 @@ def test_custom_tag_default_commit_with_vcs():
     """bamp patch -v 0.0.1 -f version.ini -c -t -T tag-{new_version}"""
     runner = CliRunner()
     with runner.isolated_filesystem():
-        git_repo('.')
+        git_repo_fixture('.')
         with open('version.ini', 'w') as v:
             v.write('0.0.1')
         result = runner.invoke(bamp, [
