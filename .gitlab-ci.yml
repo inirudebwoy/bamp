@@ -41,7 +41,7 @@ build-wheel:
   script:
     - poetry build
     - python -m pip install pipx
-    - pipx dist/*.whl
+    - pipx install dist/*.whl
     - ~/.local/bin/bamp -h
     - echo $?
   artifacts:
@@ -62,7 +62,7 @@ build-sdist:
   script:
     - poetry build
     - python -m pip install pipx
-    - pipx dist/*.tar.gz
+    - pipx install dist/*.tar.gz
     - ~/.local/bin/bamp -h
     - echo $?
   artifacts:
