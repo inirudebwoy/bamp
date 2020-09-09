@@ -1,6 +1,6 @@
 Bamp
 =====
-[![Build Status](https://travis-ci.org/inirudebwoy/bamp.svg?branch=master)](https://travis-ci.org/inirudebwoy/bamp)
+[![pipeline status](https://gitlab.com/the_speedball/bamp/badges/master/pipeline.svg)](https://gitlab.com/the_speedball/bamp/commits/master)
 
 **Pronounciation**
 
@@ -45,6 +45,14 @@ to bamp and the current version to minimise the effort.
 * increasing the `patch` part of the version with git commit and custom message.
 
         $ bamp patch --commit --message "Bamping!"
+
+* outputting the new version number without actually changing files.
+
+        $ bamp patch --dry-run
+
+* outputting current version only (implies `--dry-run`).
+  
+        $ bamp current
 
 Configuration
 =================

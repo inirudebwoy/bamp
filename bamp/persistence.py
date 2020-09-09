@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 from collections import namedtuple
 from io import open
 from shutil import copy, copystat
@@ -65,6 +66,14 @@ def _rm_files(file_list):
         os.remove(f)
 
 
+def _ver_is_found(version, line):
+    # only version number is in line
+    if version == line:
+        return True
+
+    ver_re = '(?<=[" \'=]){}[" \\\r\\n]*'.format(version)
+    return bool(re.search(ver_re, line))
+
 def _file_bamper(cur_version, new_version, file_path):
     """Replace version in file
 
@@ -88,7 +97,7 @@ def _file_bamper(cur_version, new_version, file_path):
         with open(file_path, encoding='utf-8') as of:
             found = False
             for line in of.readlines():
-                if cur_version in line:
+                if _ver_is_found(cur_version, line):
                     found = True
                     line = line.replace(cur_version, new_version)
                 cf.write(line)

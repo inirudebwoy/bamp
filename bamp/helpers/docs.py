@@ -1,5 +1,6 @@
 from bamp.config import DEFAULT_CONFIG
 
+DRY_RUN_HELP = 'Don\'t change any files'
 FILES_OPTION_HELP = ('File where version can be found. '
                      'Can be used multiple times.')
 TAG_NAME_OPTION_METAVAR = 'TAG_NAME'

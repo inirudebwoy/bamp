@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "bamp"
+version = "0.2.3"
+description = "Bamp version according to semantic versioning"
+authors = ["Michał Klich <michal@klichx.dev>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python =  "^2.7 || ^3.5 || ^3.6 ||  ^3.7 || ^3.8"
+click = "7.0"
+dulwich = "0.19.11"
+six = "^1.14.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.4.1"
+pytest-cov = "^2.8.1"
+tox = "^3.14.6"
+twine = "^3.1.1"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
