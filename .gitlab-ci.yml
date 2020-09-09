@@ -1,6 +1,7 @@
 default:
   before_script:
     - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+    - export PATH=$PATH:$HOME/.poetry/bin
 
 test-py27:
   stage: test
