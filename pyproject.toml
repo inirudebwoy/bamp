@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bamp"
-version = "1.0.0"
+version = "1.0.1"
 description = "Bamp version according to semantic versioning"
 authors = ["Michał Klich <michal@klichx.dev>"]
 license = "MIT"
