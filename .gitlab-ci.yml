@@ -31,6 +31,13 @@ test-py37:
     - pip install "tox>3,<4"
     - tox -e py37
 
+test-py38:
+  stage: test
+  image: python:3.8
+  script:
+    - pip install "tox>3,<4"
+    - tox -e py38
+
 # only tagged releases
 publish:
   stage: deploy
