@@ -5,6 +5,9 @@ description = "Bamp version according to semantic versioning"
 authors = ["Michał Klich <michal@klichx.dev>"]
 license = "MIT"
 
+[tool.poetry.scripts]
+bamp = "bamp.main:bamp"
+
 [tool.poetry.dependencies]
 python =  "^3.6 || ^3.7 || ^3.8"
 click = "^7.0"
