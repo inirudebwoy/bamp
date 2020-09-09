@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "bamp"
-version = "0.2.3"
+version = "1.0.0"
 description = "Bamp version according to semantic versioning"
 authors = ["Michał Klich <michal@klichx.dev>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python =  "^3.6 ||  ^3.7 || ^3.8"
+python =  "^3.6 || ^3.7 || ^3.8"
 click = "^7.0"
 dulwich = "0.19.11"
 six = "^1.14.0"
