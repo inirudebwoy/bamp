@@ -29,6 +29,14 @@ test-py38:
     - pip install "tox>3,<4"
     - tox -e py38
 
+test-py39:
+  stage: test
+  image: python:rc
+  allow_failure: true
+  script:
+    - pip install "tox>3,<4"
+    - tox -e py39
+
 build-wheel:
   stage: build
   image: python:3.8
