@@ -9,7 +9,7 @@ with io.open(os.path.join(here, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="bamp",
-    version="1.0.1",
+    version="1.0.2",
     install_requires=["Click", "dulwich", "six"],
     entry_points="""
         [console_scripts]
