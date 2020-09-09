@@ -35,6 +35,4 @@ publish:
   environment:
     name: pypi
   script:
-    - pip install "twine>1,<2"
-    - python setup.py sdist bdist_wheel
-    - twine upload dist/*
+    - poetry publish --build --username $POETRY_PYPI_USERNAME --password $POETRY_PYPI_PASSWORD
