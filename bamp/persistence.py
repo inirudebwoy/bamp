@@ -70,7 +70,7 @@ def _ver_is_found(version, line):
     if version == line:
         return True
 
-    ver_re = '(?<=[" \'=]){}[" \\\r\\n]*'.format(version)
+    ver_re = '(?<=[" \'=:]){}[" \\\r\\n]*'.format(version)
     return bool(re.search(ver_re, line))
 
 
