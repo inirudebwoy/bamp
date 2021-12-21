@@ -81,4 +81,5 @@ publish:
   environment:
     name: pypi
   script:
+    - echo $POETRY_PYPI_USERNAME
     - poetry publish --username $POETRY_PYPI_USERNAME --password $POETRY_PYPI_PASSWORD
