@@ -12,6 +12,7 @@ test-py36:
   stage: test
   image: python:3.6
   script:
+    - echo $POETRY_PYPI_USERNAME
     - pip install "tox>3,<4"
     - tox -e py36
 
