@@ -12,7 +12,6 @@ test-py36:
   stage: test
   image: python:3.6
   script:
-    - echo $POETRY_PYPI_USERNAME
     - pip install "tox>3,<4"
     - tox -e py36
 
@@ -83,4 +82,4 @@ publish:
     name: pypi
   script:
     - echo $POETRY_PYPI_USERNAME
-    - poetry publish --username $POETRY_PYPI_USERNAME --password $POETRY_PYPI_PASSWORD
+    - poetry publish --username "$POETRY_PYPI_USERNAME" --password "$POETRY_PYPI_PASSWORD"
