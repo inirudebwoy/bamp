@@ -15,3 +15,8 @@ def test_only_version_number_in_line():
 def test_version_in_configuration():
     assert _ver_is_found("1.0.22", "version=1.0.22")
     assert _ver_is_found("1.0.22", "version=1.0.22\n")
+    assert _ver_is_found("1.2.3", "image = 'flyte/chuddyserver:1.2.3'")
+    assert _ver_is_found("1.2.3", "image = 'flyte/chuddyserver:1.2.3'\n") 
+    assert _ver_is_found("1.1.1", "version = 'v1.1.1'")
+    assert _ver_is_found("1.1.1", "'v1.1.1'\n")
+    assert _ver_is_found("1.1.1", " v1.1.1\n")

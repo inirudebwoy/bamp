@@ -60,24 +60,24 @@ def test_arg_unsupported_part():
 
 
 def test_with_default_commit_no_vcs():
-    """bamp patch -v 0.0.1 -f version.ini -c"""
+    """bamp patch -v 3.8 -f version.ini -c"""
     runner = CliRunner()
     with runner.isolated_filesystem():
         with open("version.ini", "w") as v:
-            v.write("0.0.1")
+            v.write("image = python:3.8")
         result = runner.invoke(
-            bamp, ["patch", "-v", "0.0.1", "-f", "version.ini", "-c"]
+            bamp, ["patch", "-v", "3.8", "-f", "version.ini", "-c"]
         )
         assert result.exit_code == 1
 
 
 def test_default_tag_default_commit_with_vcs():
-    """bamp patch -v 0.0.1 -f version.ini -ct"""
+    """bamp patch -v v0.0.1 -f version.ini -ct"""
     runner = CliRunner()
     with runner.isolated_filesystem():
         git_repo_fixture(".")
         with open("version.ini", "w") as v:
-            v.write("0.0.1")
+            v.write("v0.0.1")
         result = runner.invoke(
             bamp, ["patch", "-v", "0.0.1", "-f", "version.ini", "-c", "-t"]
         )
