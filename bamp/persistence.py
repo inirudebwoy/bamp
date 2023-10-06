@@ -100,10 +100,9 @@ def _file_bamper(cur_version, new_version, file_path, limit=1):
             found = 0
             for line in of.readlines():
                 if _ver_is_found(cur_version, line):
+                    if found < limit or limit == 0:
+                        line = line.replace(cur_version, new_version)
                     found += 1
-                    line = line.replace(cur_version, new_version)
-                    if found >= limit:
-                        break
                 cf.write(line)
             if not found:
                 raise VersionNotFound()
