@@ -72,6 +72,7 @@ CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
     help=docs.TAG_NAME_OPTION_HELP,
     metavar=docs.TAG_NAME_OPTION_METAVAR,
 )
+@click.option("limit", "-l", "--limit", help=docs.LIMIT_OPTION_HELP, type=int, default=1)
 @click.argument(
     "part", nargs=1, type=click.Choice(["patch", "minor", "major", "current"])
 )
@@ -89,6 +90,7 @@ def bamp(
     config,
     tag,
     tag_name,
+    limit,
 ):
     root_path = get_root_path()
     sanity_checks(root_path)
@@ -100,7 +102,7 @@ def bamp(
     if dry_run:
         return machine_out(new_version)
 
-    bamp_files(version, new_version, files)
+    bamp_files(version, new_version, files, limit)
 
     if commit:
         commit_message = make_message(message, version, new_version)
