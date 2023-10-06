@@ -20,3 +20,4 @@ COMMIT_FLAG_OPTION_HELP = (
 )
 CONFIG_OPTION_HELP = "Path to a config file."
 DEBUG_OPTION_HELP = "Enable debug flag."
+LIMIT_OPTION_HELP = "Limit the number of instances of version to be bamped in each file."

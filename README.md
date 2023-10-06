@@ -145,3 +145,14 @@ This allows to set the version number. This number will be seeked in files and
 bamped accordingly. Bamp fails if the version can not be located.
 
     version=0.1.0
+
+limit | -l/--limit
+------------------
+Limit how many occurrences of the version number will be updated in each file.
+For example, if you `version=1.2.3` string is near the top of your file, but it
+also contains version specifiers for other requirements, such as `django>=1.2.3`,
+then the default limit of 1 will ensure that only the first occurrence is updated.
+If you'd prefer to update all occurrences, then set `limit=0`. `limit` may be set
+to any positive integer to update that many occurrences.
+
+    limit=1
